@@ -33,4 +33,6 @@ Potencjalne ficzery:
 - Wysyłanie maili przy zmianach fazy zleceń
 
 /// Piotr Łukaszewski uwagi
+
 Można się zastanowić nad resetem hasła z wysyłaniem maila + generowanie OTP w backendzie.
+Po skończeniu z readmie, zrobiłbym maina jako protected, noweo brancha np. develop też protected i każdy zrobi swojego brancha i będziemy je mergować do developa.
