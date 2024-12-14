@@ -32,3 +32,5 @@ Potencjalne ficzery:
 - Ściąganie kursów z NBP
 - Wysyłanie maili przy zmianach fazy zleceń
 
+/// Piotr Łukaszewski uwagi
+Można się zastanowić nad resetem hasła z wysyłaniem maila + generowanie OTP w backendzie.
