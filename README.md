@@ -24,3 +24,11 @@ Admin wchodzi przez stronę logowania i jego dashboard zawiera info o tym ile ti
 Zarównoo admin jak i user mogą mieć w zakładkach widok do wysyłanmia wiadomości w systemie.
 
 Ja to bym widział jako "baza". Potem to już kwestia rozwoju.
+
+
+
+Potencjalne ficzery:
+- Plugin Discord
+- Ściąganie kursów z NBP
+- Wysyłanie maili przy zmianach fazy zleceń
+
