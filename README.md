@@ -34,5 +34,8 @@ Potencjalne ficzery:
 
 /// Piotr Łukaszewski uwagi
 
-Można się zastanowić nad resetem hasła z wysyłaniem maila + generowanie OTP w backendzie.
+Można się zastanowić nad resetem hasła z wysyłaniem maila + generowanie linku do resetu w backendzie.
+
+Zapewne gdzieś przydałby się widok z listą ticketów + filtry, może zapisywanie zestawów filtrów per user.
+
 Po skończeniu z readmie, zrobiłbym maina jako protected, noweo brancha np. develop też protected i każdy zrobi swojego brancha i będziemy je mergować do developa.
