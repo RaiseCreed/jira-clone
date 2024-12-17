@@ -38,4 +38,6 @@ Można się zastanowić nad resetem hasła z wysyłaniem maila + generowanie lin
 
 Zapewne gdzieś przydałby się widok z listą ticketów + filtry, może zapisywanie zestawów filtrów per user.
 
+Zamiast określania uprawnień per rola, zrobiłbym na zasadzie macierzy uprawnień, tj. tabela z uprawnieniami i tabela asocjacyjna rola-uprawnienie. Trzeba będzie rozpisać początkowe założenia i przydzielenie uprawnień dla danych roli, reszta wyjdzie w trakcie.
+
 Po skończeniu z readmie, zrobiłbym maina jako protected, noweo brancha np. develop też protected i każdy zrobi swojego brancha i będziemy je mergować do developa.
