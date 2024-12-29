@@ -41,3 +41,16 @@ Zapewne gdzieś przydałby się widok z listą ticketów + filtry, może zapisyw
 Zamiast określania uprawnień per rola, zrobiłbym na zasadzie macierzy uprawnień, tj. tabela z uprawnieniami i tabela asocjacyjna rola-uprawnienie. Trzeba będzie rozpisać początkowe założenia i przydzielenie uprawnień dla danych roli, reszta wyjdzie w trakcie.
 
 Po skończeniu z readmie, zrobiłbym maina jako protected, noweo brancha np. develop też protected i każdy zrobi swojego brancha i będziemy je mergować do developa.
+
+/// Dominik Nytz uwagi
+Założenia po stronie bazy:
+
+ - ticket_status - podczas tworzenia ticketa należy nadać ticket_status_id na 1 (aktywny),
+ - ticket_priority - ticket_priority_id będzie nadawane podczas przydzielania zadania do użytkownika obsługującego,
+ - ticket_category - j.w.
+ - deadline - musimy oprogramować stałe wartości doliczania czasu od momentu dodania zgłoszenia w zależności jaki priorytet został nadany,
+ - date - nadawane z daty bieżącej w formacie yyyy-mm-dd hh:mm:ss,
+ - po zakończeniu zgłoszenia informacja ile czasu zajęła realizacja, ewentualnie ile czasu mogłaby zająć,
+ - attachement - trzeba określić jakiś maksymalny rozmiar załącznika który może dodać użytkownik,
+ - users - użytkownik musi mieć nadaną rolę z listy podczas tworzenia,
+ - permisions - kolumna function jest opcjinalna, jeśli uprawnienia zostaną oprogramowane na podstawie nazwy - jest niepotrzebna
