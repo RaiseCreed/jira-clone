@@ -24,7 +24,7 @@
         </a>
         @else
         <a href="{{ route('login') }}"
-            class="fs-5 rounded-md px-3 py-2 text-white ring-1 ring-transparent transition hover:text-white/70 focus:outline-none focus-visible:ring-[#FF2D20]">
+            class="text-decoration-none fs-5 px-3 py-2 text-white position-absolute top-0 end-0">
             Log in
         </a>
         @endauth

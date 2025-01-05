@@ -64,3 +64,10 @@ $focus-ring-width: .1rem;
 .nj-bg-primary {
     background-color: $nj-primary-color;
 }
+
+.card.nj-statistics-accordion {
+    .card-header {
+        border: none;
+        border-bottom: $card-border-width solid $card-border-color;
+    }
+}
