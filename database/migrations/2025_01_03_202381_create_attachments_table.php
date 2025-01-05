@@ -4,20 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserTicketsTable extends Migration
+class CreateAttachmentsTable extends Migration
 {
     public function up()
     {
-        Schema::create('user_tickets', function (Blueprint $table) {
-            $table->id('UserTicketID'); 
+        Schema::create('attachments', function (Blueprint $table) {
+            $table->id(); 
             $table->foreignId('ticket_id')->constrained('tickets'); 
-            $table->foreignId('user_id')->constrained('users'); 
+            $table->binary('blob'); 
+            $table->dateTime('date'); 
             $table->timestamps(); 
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('user_tickets');
+        Schema::dropIfExists('attachments');
     }
 }

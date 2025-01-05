@@ -8,15 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     use HasFactory;
-    protected $attributes = [
-        'ticket_status_id' => 1, // Z readme dominika
-    ];
+    // protected $attributes = [
+    //     'ticket_status_id' => 1, // Z readme dominika
+    // ];
     
-    protected $primaryKey = 'TicketID';
+    protected $primaryKey = 'id';
     protected $fillable = [
         'ticket_category_id',
         'ticket_priority_id',
         'ticket_status_id',
+        'owner_id',
+        'worker_id',
         'title',
         'date',
         'deadline',
@@ -46,7 +48,7 @@ class Ticket extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_tickets', 'ticket_id', 'user_id');
+        return $this->belongsToMany(User::class, 'owner_id', 'worker_id', 'author');
     }
 
     public function attachments()

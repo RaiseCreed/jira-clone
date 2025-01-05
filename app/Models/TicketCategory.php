@@ -8,7 +8,7 @@ class TicketCategory extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'TicketCategoryID';
+    protected $primaryKey = 'id';
     protected $fillable = ['name'];
 
     public function tickets()
