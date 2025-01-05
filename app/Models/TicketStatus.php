@@ -2,9 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,6 +9,6 @@ class TicketStatus extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'TicketStatusID';
+    protected $primaryKey = 'id';
     protected $fillable = ['name'];
 }

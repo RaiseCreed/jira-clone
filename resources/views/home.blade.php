@@ -14,7 +14,17 @@
                         </div>
                     @endif
 
-                    {{ __('You are logged in!') }}
+                    @if(auth()->user()->isAdmin())
+                        <p>{{ __('You are logged in as an admin!') }}</p>
+                    @endif
+
+                    @if(auth()->user()->isCustomer())
+                        <p>{{ __('You are logged in as an customer!') }}</p>
+                    @endif
+
+                    @if(auth()->user()->isWorker())
+                        <p>{{ __('You are logged in as an worker!') }}</p>
+                    @endif
                 </div>
             </div>
         </div>

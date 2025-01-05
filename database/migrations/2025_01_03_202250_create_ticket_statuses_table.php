@@ -9,7 +9,7 @@ class CreateTicketStatusesTable extends Migration
     public function up()
     {
         Schema::create('ticket_statuses', function (Blueprint $table) {
-            $table->id('TicketStatusID'); 
+            $table->id(); 
             $table->string('name'); 
             $table->timestamps(); 
         });

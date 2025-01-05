@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
+    'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +34,10 @@ return [
     |            "failover", "roundrobin"
     |
     */
+    //laravel-app@onet.pl
+    //8TyWeQ9PRzBqeRL
 
+    //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
     'mailers' => [
 
         'smtp' => [

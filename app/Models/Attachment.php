@@ -9,7 +9,7 @@ class Attachment extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'AttachmentID';
+    protected $primaryKey = 'id';
     protected $fillable = ['ticket_id', 'blob', 'date'];
 
     public function ticket()

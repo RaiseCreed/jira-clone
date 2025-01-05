@@ -9,10 +9,12 @@ class CreateTicketsTable extends Migration
     public function up()
     {
         Schema::create('tickets', function (Blueprint $table) {
-            $table->id('TicketID'); 
+            $table->id(); 
             $table->foreignId('ticket_category_id')->constrained('ticket_categories');
             $table->foreignId('ticket_priority_id')->constrained('ticket_priorities'); 
             $table->foreignId('ticket_status_id')->constrained('ticket_statuses'); 
+            $table->foreignId('owner_id')->constrained('users');
+            $table->foreignId('worker_id')->constrained('users')->nullable();
             $table->string('title');
             $table->dateTime('date'); 
             $table->dateTime('deadline'); 

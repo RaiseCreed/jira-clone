@@ -9,7 +9,7 @@ class CreateTicketCategoriesTable extends Migration
     public function up()
     {
         Schema::create('ticket_categories', function (Blueprint $table) {
-            $table->id('TicketCategoryID'); 
+            $table->id(); 
             $table->string('name'); 
             $table->timestamps(); 
         });

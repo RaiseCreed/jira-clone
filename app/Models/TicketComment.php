@@ -9,11 +9,11 @@ class TicketComment extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'TicketCommentID';
-    protected $fillable = ['user_ticket_id', 'user', 'comment', 'date'];
+    protected $primaryKey = 'id';
+    protected $fillable = ['ticket_id', 'author', 'comment', 'date'];
 
     public function ticket()
     {
-        return $this->belongsTo(Ticket::class, 'user_ticket_id');
+        return $this->belongsTo(Ticket::class, 'ticket_id');
     }
 }
