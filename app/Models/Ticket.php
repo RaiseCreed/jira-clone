@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Ticket extends Model
 {
     use HasFactory;
-    // protected $attributes = [
-    //     'ticket_status_id' => 1, // Z readme dominika
-    // ];
+    
+    protected $casts = [
+        'deadline' => 'datetime'
+    ];
     
     protected $primaryKey = 'id';
     protected $fillable = [
@@ -46,9 +47,19 @@ class Ticket extends Model
         return $this->hasMany(TicketComment::class, 'user_ticket_id');
     }
 
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
+    }
+
+    public function worker()
+    {
+        return $this->belongsTo(User::class, 'worker_id');
+    }
+
     public function users()
     {
-        return $this->belongsToMany(User::class, 'owner_id', 'worker_id', 'author');
+        return $this->belongsToMany(User::class, 'author');
     }
 
     public function attachments()
