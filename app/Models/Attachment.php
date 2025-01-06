@@ -16,4 +16,12 @@ class Attachment extends Model
     {
         return $this->belongsTo(Ticket::class, 'ticket_id');
     }
+    
+    {
+        public function attachments()
+        {
+            return $this->hasMany(Attachment::class);
+        }
+    }
 }
+
