@@ -65,9 +65,59 @@ $focus-ring-width: .1rem;
     background-color: $nj-primary-color;
 }
 
-.card.nj-statistics-accordion {
-    .card-header {
-        border: none;
-        border-bottom: $card-border-width solid $card-border-color;
+.nj-ticket-indicator {
+    width: min-content;
+    font-size: .8rem;
+    font-weight: 700;
+    text-align: center;
+    .nj-ticket-circle {
+        @extend .rounded-circle;
+        align-content: center;
+        color: white;
+        height: 3rem;
+        width: 3rem;
+    }
+    .nj-ticket-circle.sla-0 {
+        background-color: red;
+    }
+    .nj-ticket-circle.sla-1 {
+        background-color: darkorange;
+    }
+    .nj-ticket-circle.sla-2 {
+        background-color: green;
+    }
+    .nj-ticket-circle.sla-3 {
+        background-color: gray;
     }
 }
+
+.nj-ticket-due-time-indicator {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    .nj-ticket-circle {
+        @extend .rounded-circle;
+        font-size: .8rem;
+        align-content: center;
+        color: white;
+        height: 3rem;
+        width: 3rem;
+    }
+    .nj-ticket-circle.overdue {
+        background-color: red;
+    }
+    .nj-ticket-circle.today {
+        background-color: darkorange;
+    }
+    .nj-ticket-circle.tomorrow {
+        background-color: green;
+    }
+    .nj-ticket-circle.rest {
+        background-color: gray;
+    }
+}
+

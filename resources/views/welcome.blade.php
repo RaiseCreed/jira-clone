@@ -10,7 +10,6 @@
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
     @vite(['resources/sass/app.scss','resources/css/app.css', 'resources/js/app.js'])
-    @else
     @endif
 </head>
 
@@ -18,7 +17,7 @@
     @if (Route::has('login'))
     <nav class="flex flex-1 justify-end">
         @auth
-        <a href="{{ url('/dashboard') }}"
+        <a href="{{ route('dashboard') }}"
             class="text-decoration-none fs-5 px-3 py-2 text-white position-absolute top-0 end-0">
             Dashboard
         </a>
