@@ -2,11 +2,7 @@
 
 @section('content')
 <div class="container">
-    @if(auth()->user()->isAdmin())
-    <p>{{ __('You are logged in as an admin!') }}</p>
-    @endif
 
-    @if(auth()->user()->isCustomer() || auth()->user()->isWorker())
     <div class="col-md-4 float-md-end sticky-md-top ms-md-2 mb-2 z-1">
         <div class="card">
             <div class="card-header" data-bs-toggle="collapse" href="#statistics" role="button" aria-expanded="true"
@@ -14,6 +10,10 @@
             </div>
             <div class="collapse show" id="statistics">
                 <div class="card-body">
+                    @if(auth()->user()->isAdmin())
+                    {{-- todo --}}
+                    @endif
+                    @if(auth()->user()->isCustomer() || auth()->user()->isWorker())
                     <div class="mb-2">
                         <div class="mb-2 fs-5 text-center">Open tickets</div>
                         <div class="row justify-content-center">
@@ -56,23 +56,57 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                 </div>
             </div>
-
         </div>
-
     </div>
     <div class="col-md-8">
         <div class=" card">
-            <div class="card-header">{{ __('Dashboard') }}</div>
+            <div class="card-header">{{ __('All tickets') }}</div>
+            <div class="card-body">
+                <a href="{{ route('tickets.create') }}" class="col-12 col-sm-auto btn btn-primary mt-3 float-end"><i
+                        class="bi bi-plus me-1"></i>Add</a>
+                @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+                @endif
 
-            <div class="card-body" style="height: 2000px">
-                bbbbbbbb
-
-
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nazwa</th>
+                            <th scope="col">Kategoria</th>
+                            <th scope="col">Priorytet</th>
+                            <th scope="col">Status</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $i = 1;
+                        @endphp
+                        @foreach($tickets as $ticket)
+                        <tr>
+                            <th scope="row">{{$i}}</th>
+                            <td>{{$ticket->title}}</td>
+                            <td>{{$ticket->category->name}}</td>
+                            <td>{{$ticket->priority->name}}</td>
+                            <td>{{$ticket->status->name}}</td>
+                            <td>
+                                <a href="{{route('tickets.show', $ticket->id)}}" class="btn btn-primary">Szczegóły</a>
+                            </td>
+                        </tr>
+                        @php
+                        $i++;
+                        @endphp
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    @endif
 </div>
 @endsection

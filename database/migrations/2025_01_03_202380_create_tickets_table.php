@@ -14,7 +14,7 @@ class CreateTicketsTable extends Migration
             $table->foreignId('ticket_priority_id')->constrained('ticket_priorities'); 
             $table->foreignId('ticket_status_id')->constrained('ticket_statuses'); 
             $table->foreignId('owner_id')->constrained('users');
-            $table->foreignId('worker_id')->constrained('users')->nullable();
+            $table->foreignId('worker_id')->nullable()->constrained('users');
             $table->string('title');
             $table->dateTime('date'); 
             $table->dateTime('deadline'); 
