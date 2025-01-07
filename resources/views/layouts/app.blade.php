@@ -45,6 +45,11 @@
                         <li class="nav-item">
                             <a class="nav-link" href="">tab3</a>
                         </li>
+                        @if(auth()->user()->isAdmin())
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/workers') }}">Workers list</a>
+                        </li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
