@@ -13,6 +13,8 @@ class CreateAttachmentsTable extends Migration
             $table->foreignId('ticket_id')->constrained('tickets'); 
             $table->binary('blob'); 
             $table->dateTime('date'); 
+            $table->string('file_path'); // Ścieżka do pliku
+            $table->string('file_name'); // Nazwa pliku
             $table->timestamps(); 
         });
     }

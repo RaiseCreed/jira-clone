@@ -2,16 +2,20 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Models\Ticket;
+use App\Models\Attachment;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Models\Ticket;
 use App\Models\TicketComment;
 
 class TicketController extends Controller
 {
-
+    
     public function __construct()
     {
         $this->middleware('auth');
@@ -66,6 +70,7 @@ class TicketController extends Controller
             'ticket_priority_id' => 'required|exists:ticket_priorities,id',
             'ticket_status_id' => 'required|exists:ticket_statuses,id',
             'deadline' => 'required|date|after:now',
+            'attachment' => 'nullable|file|mimes:jpg,png,pdf,docx|max:2048'
         ]);
 
         $ticket = \App\Models\Ticket::create([
@@ -80,6 +85,17 @@ class TicketController extends Controller
             'worker_id' => null,
         ]);
 
+      
+        if ($request->hasFile('attachment')) {
+            $file = $request->file('attachment');
+            $path = $file->store('attachments', 'public');
+
+            $ticket->attachments()->create([
+                'file_path' => $path,
+                'file_name' => $file->getClientOriginalName(),
+            ]);
+        }
+      
         // Wysyłamy maila do admina
         $user = \App\Models\User::where('role', 'admin')->first();
         Mail::to($user->email)->send(new \App\Mail\NewTicketMail($ticket));
@@ -107,7 +123,24 @@ class TicketController extends Controller
             'deadline' => 'required|date|after:now',
         ]);
 
+        
+        //if (auth()->user()->is_admin && isset($validated['assigned_to'])) {
+        //    $ticket->assigned_to = $validated['assigned_to'];
+        //}
+      
         $ticket->update($validated);
+      
+        if ($request->hasFile('attachment')) {
+            $file = $request->file('attachment');
+            $path = $file->store('attachments', 'public');
+
+            
+            $ticket->attachments()->create([
+                'file_path' => $path,
+                'file_name' => $file->getClientOriginalName(),
+            ]);
+        }
+      
         return redirect()->route('tickets.show',$ticket->id);
     }
 
@@ -116,6 +149,19 @@ class TicketController extends Controller
         $ticket = Ticket::findOrFail($id);
         $ticket->delete();
         return redirect()->route('home')->with('success', 'Ticket deleted successfully.');
+    }
+
+    // Metoda do usuwania załączników
+    public function destroyAttachment($ticketId, $attachmentId)
+    {
+        $ticket = Ticket::findOrFail($ticketId);
+        $attachment = Attachment::findOrFail($attachmentId);
+
+        Storage::delete('public/' . $attachment->file_path);
+
+        $attachment->delete();
+
+        return back()->with('success', 'Załącznik został usunięty.');
     }
 }
 ?>

@@ -24,7 +24,9 @@ class Ticket extends Model
         'date',
         'deadline',
         'date_end',
-        'content'
+        'content',
+        'description',
+        'assigned_to', 
     ];
 
     public function category()
@@ -65,5 +67,10 @@ class Ticket extends Model
     public function attachments()
     {
         return $this->hasMany(Attachment::class, 'ticket_id');
+    }
+    public function assignedUser()
+
+    {
+    return $this->belongsTo(User::class, 'assigned_to');
     }
 }
