@@ -9,7 +9,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+// Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
 // Widoki profilu
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
@@ -36,3 +36,8 @@ Route::post('/tickets', [App\Http\Controllers\TicketController::class, 'store'])
 Route::get('/tickets/{ticket}/edit', [App\Http\Controllers\TicketController::class, 'edit'])->name('tickets.edit');
 Route::put('/tickets/{ticket}', [App\Http\Controllers\TicketController::class, 'update'])->name('tickets.update');
 Route::delete('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'destroy'])->name('tickets.destroy');
+
+// Komentarze
+Route::post('/tickets/add-command', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
+Route::delete('/tickets/delete-command/{comment}', [App\Http\Controllers\TicketController::class, 'deleteComment'])->name('tickets.delete-comment');
+

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Ticket;
+use App\Models\TicketComment;
 
 class TicketController extends Controller
 {
@@ -16,10 +17,35 @@ class TicketController extends Controller
         $this->middleware('auth');
     }
     
+    public function deleteComment(TicketComment $comment)
+    {
+        $comment->delete();
+        return redirect()->route('tickets.show', $comment->ticket_id);
+    }
+
+    public function addComment(Request $request)
+    {
+        $validated = $request->validate([
+            'comment' => 'required|string',
+            'ticket_id' => 'required|exists:tickets,id',
+        ]);
+
+        $ticket = Ticket::findOrFail($validated['ticket_id']);
+        $ticket->comments()->create([
+            'comment' => $validated['comment'],
+            'date' => now(),
+            'author_id' => auth()->id(),
+            'ticket_id' => $validated['ticket_id']
+        ]);
+
+        return redirect()->route('tickets.show', $validated['ticket_id']);
+    }
+
     public function show($id)
     {
         $ticket = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->findOrFail($id);
-        return view('tickets.show', compact('ticket'));
+        $comments = $ticket->comments()->orderBy('created_at', 'desc')->get();
+        return view('tickets.show', compact('ticket', 'comments'));
     }
 
     public function create()

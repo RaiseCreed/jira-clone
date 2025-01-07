@@ -13,12 +13,12 @@ return new class extends Migration
     public function up(): void
     {
         DB::table('ticket_statuses')->insert([
-            ['name' => 'Nowe', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Analiza', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'W trakcie pracy', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Testy', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Gotowe', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Zamknięte', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'New', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Analysis', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Ongoing', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Testing', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Ready', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Closed', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 
@@ -28,7 +28,7 @@ return new class extends Migration
     public function down(): void
     {
         DB::table('ticket_statuses')->whereIn('name', [
-            'Nowe', 'Analiza', 'W trakcie pracy', 'Testy', 'Gotowe', 'Zamknięte'
+            'New', 'Analysis', 'Ongoing', 'Testing', 'Ready', 'Closed'
         ])->delete();
     }
 };

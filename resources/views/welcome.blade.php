@@ -17,7 +17,7 @@
     @if (Route::has('login'))
     <nav class="flex flex-1 justify-end">
         @auth
-        <a href="{{ route('dashboard') }}"
+        <a href="{{ route('home') }}"
             class="text-decoration-none fs-5 px-3 py-2 text-white position-absolute top-0 end-0">
             Dashboard
         </a>
