@@ -44,7 +44,7 @@ class Ticket extends Model
 
     public function comments()
     {
-        return $this->hasMany(TicketComment::class, 'user_ticket_id');
+        return $this->hasMany(TicketComment::class, 'ticket_id');
     }
 
     public function owner()

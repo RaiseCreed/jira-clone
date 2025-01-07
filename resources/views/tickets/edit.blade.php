@@ -83,6 +83,6 @@
         <button type="submit" class="btn btn-primary">Update Ticket</button>
     </form>
 
-    <a href="{{route('tickets.show', $ticket->id)}}" class="btn btn-primary mt-3">Powrót</a> 
+    <a href="{{route('tickets.show', $ticket->id)}}" class="btn btn-primary mt-3">Go back</a> 
 </div>
 @endsection
