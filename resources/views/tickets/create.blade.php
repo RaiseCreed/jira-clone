@@ -83,5 +83,6 @@
 
         <button type="submit" class="btn btn-primary">Create Ticket</button>
     </form>
+        <a href="{{route('home')}}" class="btn btn-primary mt-3">Powrót</a> 
 </div>
 @endsection
