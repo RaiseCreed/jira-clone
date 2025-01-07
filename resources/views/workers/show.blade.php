@@ -3,6 +3,8 @@
 @section('content')
 <div class="container">
     <h1>Workers list</h1>
+    <a href="{{route('users.add')}}" class="btn btn-success">Add user</a>
+    <p></p>
     <div class="card">
         <div class="card-body">
             @if (session('success'))
