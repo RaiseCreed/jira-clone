@@ -10,18 +10,15 @@ class Attachment extends Model
     use HasFactory;
 
     protected $primaryKey = 'id';
-    protected $fillable = ['ticket_id', 'blob', 'date'];
+    protected $fillable = ['ticket_id', 'blob', 'date', 'file_path', 'file_name'];
 
     public function ticket()
     {
         return $this->belongsTo(Ticket::class, 'ticket_id');
     }
-    
-    {
-        public function attachments()
-        {
-            return $this->hasMany(Attachment::class);
-        }
-    }
-}
 
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
+}    

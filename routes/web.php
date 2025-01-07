@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\admin\admin;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TicketController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,3 +22,11 @@ Route::post('/profile/update', [App\Http\Controllers\ProfileController::class, '
 
 //widok admina do zrobienia jeszcze
 Route::get('/admin/dashboard', [admin::class, 'showDashboard'])->name('admin.dashboard');
+
+Route::resource('tickets', TicketController::class);
+
+// Trasa do usuwania załączników
+Route::delete('tickets/{ticket}/attachment/{attachment}', [TicketController::class, 'destroyAttachment'])->name('tickets.destroyAttachment');
+
+// Trasa do dodawania załączników do ticketu
+Route::post('/tickets/{ticket}/attachments', [TicketController::class, 'addAttachment'])->name('tickets.addAttachment');
