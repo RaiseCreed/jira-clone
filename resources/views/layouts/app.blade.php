@@ -22,7 +22,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light nj-nav-bar shadow-sm">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
+                <a class="navbar-brand d-flex align-items-center" href={{ url('/dashboard')}}>
                     <img src="https://flowbite.com/docs/images/logo.svg" class="p-2" alt="Flowbite Logo">
                     {{ config('app.name', 'Not Jira') }}
                 </a>
