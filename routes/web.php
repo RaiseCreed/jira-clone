@@ -33,8 +33,8 @@ Route::post('/profile/update', [App\Http\Controllers\ProfileController::class, '
 Route::get('/workers', [App\Http\Controllers\WorkersController::class, 'show'])->name('workers.show');
 Route::get('/password/email', [App\Http\Controllers\PasswordEmail::class, "passwordEmail"])->name('password.email');
 Route::post('/password/email', [App\Http\Controllers\PasswordEmail::class, "passwordEmailPost"])->name('password.email.post');
-Route::get('password/reset/{token}/{email}', [App\Http\Controllers\PasswordEmail::class, "passwordReset"])->name('password.reset');
-Route::post('password/reset', [App\Http\Controllers\PasswordEmail::class, "passwordResetPost"])->name('password.reset.post');
+Route::get('/password/reset/{token}/{email}', [App\Http\Controllers\PasswordEmail::class, "passwordReset"])->name('password.reset.new');
+Route::post('/password/reset', [App\Http\Controllers\PasswordEmail::class, "passwordResetPost"])->name('password.reset.post');
 
 //Dodawanie użytkownika
 Route::get('/users/add', [App\Http\Controllers\UserController::class, 'addUser'])->name('users.add');
