@@ -10,10 +10,6 @@
             </div>
             <div class="collapse show" id="statistics">
                 <div class="card-body">
-                    @if(auth()->user()->isAdmin())
-                    {{-- todo --}}
-                    @endif
-                    @if(auth()->user()->isCustomer() || auth()->user()->isWorker())
                     <div class="mb-2">
                         <div class="mb-2 fs-5 text-center">Open tickets</div>
                         <div class="row justify-content-center">
@@ -56,17 +52,14 @@
                             </div>
                         </div>
                     </div>
-                    @endif
                 </div>
             </div>
         </div>
     </div>
     <div class="col-md-8">
         <div class=" card">
-            <div class="card-header">{{ __('All tickets') }}</div>
+            <div class="card-header">{{ __('Assigned tickets') }}</div>
             <div class="card-body">
-                <a href="{{ route('tickets.create') }}" class="col-12 col-sm-auto btn btn-primary mt-3 float-end"><i
-                        class="bi bi-plus me-1"></i>Add</a>
                 @if (session('status'))
                 <div class="alert alert-success" role="alert">
                     {{ session('status') }}
@@ -77,10 +70,12 @@
                     <thead>
                         <tr>
                             <th scope="col">#</th>
-                            <th scope="col">Nazwa</th>
-                            <th scope="col">Kategoria</th>
-                            <th scope="col">Priorytet</th>
+                            <th scope="col">Ticket name</th>
+                            <th scope="col">Category</th>
+                            <th scope="col">Priority</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Issued by</th>
+                            <th scope="col">Deadline</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -95,8 +90,10 @@
                             <td>{{$ticket->category->name}}</td>
                             <td>{{$ticket->priority->name}}</td>
                             <td>{{$ticket->status->name}}</td>
+                            <td>{{$ticket->owner->name}}</td>
+                            <td>{{$ticket->deadline}}</td>
                             <td>
-                                <a href="{{route('tickets.show', $ticket->id)}}" class="btn btn-primary">Szczegóły</a>
+                                <a href="{{route('tickets.show', $ticket->id)}}" class="btn btn-primary">Show details</a>
                             </td>
                         </tr>
                         @php

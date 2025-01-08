@@ -22,7 +22,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light nj-nav-bar shadow-sm">
             <div class="container">
-                <a class="navbar-brand d-flex align-items-center" href={{ url('/dashboard')}}>
+                <a class="navbar-brand d-flex align-items-center" href={{ url('/home')}}>
                     <img src="https://flowbite.com/docs/images/logo.svg" class="p-2" alt="Flowbite Logo">
                     {{ config('app.name', 'Not Jira') }}
                 </a>
@@ -36,15 +36,11 @@
                     <!-- Left Side Of Navbar -->
 
                     <ul class="navbar-nav me-auto ms-5">
+                        @if(Auth::user()->role == 'admin')
                         <li class="nav-item">
-                            <a class="nav-link" href="">tab1</a>
+                            <a class="nav-link" href="{{route("workers.show")}}">Workers</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">tab2</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">tab3</a>
-                        </li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -63,9 +59,6 @@
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('profile.show') }}">{{ __('Profile') }}</a>
-                                </li>
-                                <li>
-                                    <div class="dropdown-item">cos2</div>
                                 </li>
                                 <li>
                                     <hr class="dropdown-divider">
