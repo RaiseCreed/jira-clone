@@ -30,13 +30,13 @@ class HomeController extends Controller
         switch ($user->role) {
             case 'customer': // Widok zwykłego usera
                 $tickets = Ticket::where('owner_id', $user->id)->get();
-                return view('home-customer',['tickets' => $tickets]);
+                return view('home',['tickets' => $tickets]);
             case 'worker':
                 $tickets = Ticket::where('worker_id', $user->id)->get();
-                return view('home-worker',['tickets' => $tickets]);
+                return view('home',['tickets' => $tickets]);
             case 'admin':
                 $tickets = Ticket::where('worker_id', $user->id)->get(); // TODO
-                return view('home-admin',['tickets' => $tickets]);
+                return view('home',['tickets' => $tickets]);
         }
 
         return view('home');
