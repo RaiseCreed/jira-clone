@@ -18,7 +18,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body>
+<body style="background-color: rgb(247, 247, 245)">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light nj-nav-bar shadow-sm">
             <div class="container">

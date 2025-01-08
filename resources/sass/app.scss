@@ -26,6 +26,17 @@ $focus-ring-width: .1rem;
     margin-left: 0px;
 }
 
+main>.nj-container {
+    @extend .container;
+    @extend .d-flex; 
+    @extend .justify-content-center;
+    >.card {
+        @extend .col-12; 
+        @extend .col-md-8;
+        @extend .col-lg-6;
+    }
+}
+
 .nj-home-background {
     // width: 100vw;
     height: 100vh;
@@ -63,6 +74,29 @@ $focus-ring-width: .1rem;
 
 .nj-bg-primary {
     background-color: $nj-primary-color;
+}
+
+.nj-button-row {
+    @extend .row;
+    @extend .justify-content-between;
+    [class^="nj-button-"]:not(:first-child) {
+        @extend .mt-sm-0;
+        @extend .mt-3
+    }
+}
+
+.nj-button-primary {
+    @extend .col-12;
+    @extend .col-sm-auto;
+    @extend .btn;
+    @extend .btn-primary;
+ }
+
+.nj-button-secondary {
+   @extend .col-12;
+   @extend .col-sm-auto;
+   @extend .btn;
+   @extend .btn-outline-secondary;
 }
 
 .nj-ticket-indicator {
