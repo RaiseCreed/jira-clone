@@ -28,8 +28,23 @@
     </div>
     <div class="col-md-8">
         <div class=" card">
-            <div class="card-header">{{ __('Assigned tickets') }}</div>
+            
+            @if(auth()->user()->isAdmin())
+                <div class="card-header">{{ __('Unassigned tickets') }}</div>
+            @elseif(auth()->user()->isWorker())
+                <div class="card-header">{{ __('Assigned tickets') }}</div>
+            @elseif(auth()->user()->isCustomer())
+                <div class="card-header">{{ __('My tickets') }}</div>
+            @endif
+            
             <div class="card-body">
+
+                @if(auth()->user()->isCustomer())
+                    <a href="{{ route('tickets.create') }}" class="col-12 col-sm-auto btn btn-primary mt-3 float-end">
+                        <i class="bi bi-plus me-1"></i>Add
+                    </a>
+                @endif
+
                 @if (session('status'))
                 <div class="alert alert-success" role="alert">
                     {{ session('status') }}
