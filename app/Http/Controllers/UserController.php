@@ -59,4 +59,12 @@ class UserController extends Controller
             return redirect()->route('login')->with('success', 'New password set.');
         }
     }
+
+    public function deleteUser($email){
+        $user = User::where('email', $email)->first();
+        $user_name = $user->name;
+        $user->delete();
+
+        return redirect()->route('home')->with('success', 'User ' . $user_name . ' deleted');
+    }
 }

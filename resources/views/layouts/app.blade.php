@@ -41,7 +41,12 @@
                         </li>
                         @if(Auth::user()->role == 'admin')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route("workers.show")}}">Workers</a>
+                            <a class="nav-link" href="{{route('workers.show')}}">Workers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('customers.show')}}">Customers</a>
+                        </li><li class="nav-item">
+                            <a class="nav-link" href="{{route('users.add')}}">Add user</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route("tickets.index")}}">All tickets</a>

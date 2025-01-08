@@ -6,7 +6,7 @@ use App\Http\Controllers\TicketController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('home');
 });
 
 Auth::routes();
@@ -32,8 +32,11 @@ Route::delete('/tickets/delete-command/{comment}', [App\Http\Controllers\TicketC
 //Route::post('/tickets/{ticket}/attachments', [TicketController::class, 'addAttachment'])->name('tickets.addAttachment');
 
 
-//Zarządzanie pracownikami
+//Zarządzanie pracownikami i klientami
 Route::get('/workers', [App\Http\Controllers\WorkersController::class, 'show'])->name('workers.show');
+Route::get('/customers', [App\Http\Controllers\CustomersController::class, 'show'])->name('customers.show');
+
+//Reset hasła
 Route::get('/password/email', [App\Http\Controllers\PasswordEmail::class, "passwordEmail"])->name('password.email');
 Route::post('/password/email', [App\Http\Controllers\PasswordEmail::class, "passwordEmailPost"])->name('password.email.post');
 Route::get('/password/reset/{token}/{email}', [App\Http\Controllers\PasswordEmail::class, "passwordReset"])->name('password.reset.new');
@@ -44,6 +47,9 @@ Route::get('/users/add', [App\Http\Controllers\UserController::class, 'addUser']
 Route::post('/users/add', [App\Http\Controllers\UserController::class, 'addUserPost'])->name('users.add.post');
 Route::get('/password/set/{name}/{token}/{email}', [App\Http\Controllers\UserController::class, 'passwordSet'])->name('password.set');
 Route::post('/password/set', [App\Http\Controllers\UserController::class, 'passwordSetPost'])->name('password.set.post');
+
+//Usuwanie użytkownika
+Route::delete('/users/{email}', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('users.delete');
 
 // Widoki ticketów
 Route::get('/tickets', [App\Http\Controllers\TicketController::class, 'index'])->name('tickets.index');
