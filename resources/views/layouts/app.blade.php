@@ -38,7 +38,12 @@
                     <ul class="navbar-nav me-auto ms-5">
                         @if(Auth::user()->role == 'admin')
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route("workers.show")}}">Workers</a>
+                            <a class="nav-link" href="{{route('workers.show')}}">Workers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('customers.show')}}">Customers</a>
+                        </li><li class="nav-item">
+                            <a class="nav-link" href="{{route('users.add')}}">Add user</a>
                         </li>
                         @endif
                     </ul>

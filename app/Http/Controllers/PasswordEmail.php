@@ -37,7 +37,7 @@ class PasswordEmail extends Controller
             $message->subject("Reset password");
         });
 
-        return redirect()->route('workers.show')->with('success', 'Email send.');
+        return redirect()->route('home')->with('success', 'Email send.');
     }
 
     public function passwordReset($token, $email){

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <h1>Workers list</h1>
+    <h1>Customers list</h1>
     <div class="card">
         <div class="card-body">
             @if (session('success'))
@@ -21,7 +21,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($workers as $item)
+                    @foreach($customers as $item)
                     <tr>
                         <td>{{ $item -> name}}</td>
                         <td>{{ $item -> email}}</td>
@@ -40,7 +40,7 @@
                     @endforeach
                 </tbody>
             </table>
-            {{ $workers->links() }}
+            {{ $customers->links() }}
         </div>
     </div>
 </div>
