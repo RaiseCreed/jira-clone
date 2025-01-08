@@ -35,7 +35,7 @@ class HomeController extends Controller
                 $tickets = Ticket::where('worker_id', $user->id)->get();
                 return view('home',['tickets' => $tickets]);
             case 'admin':
-                $tickets = Ticket::where('worker_id', $user->id)->get(); // TODO
+                $tickets = Ticket::where('worker_id', null)->get();
                 return view('home',['tickets' => $tickets]);
         }
 

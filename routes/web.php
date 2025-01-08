@@ -19,6 +19,9 @@ Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])-
 Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 
+// Komentarze
+Route::post('/tickets/add-command', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
+Route::delete('/tickets/delete-command/{comment}', [App\Http\Controllers\TicketController::class, 'deleteComment'])->name('tickets.delete-comment');
 
 // BartekChanges
 // Trasa do usuwania załączników
@@ -49,6 +52,7 @@ Route::post('/password/set', [App\Http\Controllers\UserController::class, 'passw
 Route::delete('/users/{email}', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('users.delete');
 
 // Widoki ticketów
+Route::get('/tickets', [App\Http\Controllers\TicketController::class, 'index'])->name('tickets.index');
 Route::get('/tickets/create', [App\Http\Controllers\TicketController::class, 'create'])->name('tickets.create');
 Route::get('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'show'])->name('tickets.show');
 Route::post('/tickets', [App\Http\Controllers\TicketController::class, 'store'])->name('tickets.store');
@@ -56,7 +60,5 @@ Route::get('/tickets/{ticket}/edit', [App\Http\Controllers\TicketController::cla
 Route::put('/tickets/{ticket}', [App\Http\Controllers\TicketController::class, 'update'])->name('tickets.update');
 Route::delete('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'destroy'])->name('tickets.destroy');
 
-// Komentarze
-Route::post('/tickets/add-command', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
-Route::delete('/tickets/delete-command/{comment}', [App\Http\Controllers\TicketController::class, 'deleteComment'])->name('tickets.delete-comment');
+
 

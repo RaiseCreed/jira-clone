@@ -45,6 +45,12 @@ class TicketController extends Controller
         return redirect()->route('tickets.show', $validated['ticket_id']);
     }
 
+    public function index()
+    {
+        $tickets = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->get();
+        return view('tickets.index', compact('tickets'));
+    }
+    
     public function show($id)
     {
         $ticket = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->findOrFail($id);
@@ -99,7 +105,8 @@ class TicketController extends Controller
       
         // Wysyłamy maila do admina
         $user = \App\Models\User::where('role', 'admin')->first();
-        Mail::to($user->email)->send(new \App\Mail\NewTicketMail($ticket));
+        if($user) 
+            Mail::to($user->email)->send(new \App\Mail\NewTicketMail($ticket));
 
         return redirect()->route('home');
     }
