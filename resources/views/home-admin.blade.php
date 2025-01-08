@@ -2,7 +2,11 @@
 
 @section('content')
 <div class="container">
-
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="col-md-4 float-md-end sticky-md-top ms-md-2 mb-2 z-1">
         <div class="card">
             <div class="card-header" data-bs-toggle="collapse" href="#statistics" role="button" aria-expanded="true"

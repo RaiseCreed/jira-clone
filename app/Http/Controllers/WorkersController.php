@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 class WorkersController extends Controller
 {
     public function show(){
-        $workers = User::all()->where('role','worker');
+        $workers = User::where('role','worker')->paginate(3);
         return view('workers.show', compact('workers'));
     }
 }
