@@ -20,11 +20,13 @@ Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edi
 Route::post('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 
 
+// BartekChanges
 // Trasa do usuwania załączników
-Route::delete('tickets/{ticket}/attachment/{attachment}', [TicketController::class, 'destroyAttachment'])->name('tickets.destroyAttachment');
+//Route::delete('tickets/{ticket}/attachment/{attachment}', [TicketController::class, 'destroyAttachment'])->name('tickets.destroyAttachment');
 
+// BartekChanges
 // Trasa do dodawania załączników do ticketu
-Route::post('/tickets/{ticket}/attachments', [TicketController::class, 'addAttachment'])->name('tickets.addAttachment');
+//Route::post('/tickets/{ticket}/attachments', [TicketController::class, 'addAttachment'])->name('tickets.addAttachment');
 
 
 //Zarządzanie pracownikami
