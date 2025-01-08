@@ -6,7 +6,7 @@
 
     <form action="{{ route('tickets.update', ['ticket' => $ticket->id]) }}" method="POST">
         @csrf
-        @method('PUT') <!-- Use PUT for updating -->
+        @method('PUT')
 
         <!-- Title -->
         <div class="mb-3">

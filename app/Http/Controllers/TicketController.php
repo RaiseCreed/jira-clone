@@ -86,15 +86,16 @@ class TicketController extends Controller
         ]);
 
       
-        if ($request->hasFile('attachment')) {
-            $file = $request->file('attachment');
-            $path = $file->store('attachments', 'public');
+        // BartekChanges
+        // if ($request->hasFile('attachment')) {
+        //     $file = $request->file('attachment');
+        //     $path = $file->store('attachments', 'public');
 
-            $ticket->attachments()->create([
-                'file_path' => $path,
-                'file_name' => $file->getClientOriginalName(),
-            ]);
-        }
+        //     $ticket->attachments()->create([
+        //         'file_path' => $path,
+        //         'file_name' => $file->getClientOriginalName(),
+        //     ]);
+        // }
       
         // Wysyłamy maila do admina
         $user = \App\Models\User::where('role', 'admin')->first();
@@ -124,22 +125,24 @@ class TicketController extends Controller
         ]);
 
         
+        // BartekChanges
         //if (auth()->user()->is_admin && isset($validated['assigned_to'])) {
         //    $ticket->assigned_to = $validated['assigned_to'];
         //}
       
         $ticket->update($validated);
       
-        if ($request->hasFile('attachment')) {
-            $file = $request->file('attachment');
-            $path = $file->store('attachments', 'public');
+        // BartekChanges
+        // if ($request->hasFile('attachment')) {
+        //     $file = $request->file('attachment');
+        //     $path = $file->store('attachments', 'public');
 
             
-            $ticket->attachments()->create([
-                'file_path' => $path,
-                'file_name' => $file->getClientOriginalName(),
-            ]);
-        }
+        //     $ticket->attachments()->create([
+        //         'file_path' => $path,
+        //         'file_name' => $file->getClientOriginalName(),
+        //     ]);
+        // }
       
         return redirect()->route('tickets.show',$ticket->id);
     }
@@ -151,17 +154,18 @@ class TicketController extends Controller
         return redirect()->route('home')->with('success', 'Ticket deleted successfully.');
     }
 
+    // BartekChanges
     // Metoda do usuwania załączników
-    public function destroyAttachment($ticketId, $attachmentId)
-    {
-        $ticket = Ticket::findOrFail($ticketId);
-        $attachment = Attachment::findOrFail($attachmentId);
+    // public function destroyAttachment($ticketId, $attachmentId)
+    // {
+    //     $ticket = Ticket::findOrFail($ticketId);
+    //     $attachment = Attachment::findOrFail($attachmentId);
 
-        Storage::delete('public/' . $attachment->file_path);
+    //     Storage::delete('public/' . $attachment->file_path);
 
-        $attachment->delete();
+    //     $attachment->delete();
 
-        return back()->with('success', 'Załącznik został usunięty.');
-    }
+    //     return back()->with('success', 'Załącznik został usunięty.');
+    // }
 }
 ?>
