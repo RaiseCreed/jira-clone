@@ -64,6 +64,6 @@ class PasswordEmail extends Controller
 
         DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'New password set.');
     }
 }

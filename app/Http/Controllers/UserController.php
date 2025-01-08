@@ -56,7 +56,7 @@ class UserController extends Controller
         if($user){
             $user->password = Hash::make($request->input('password'));
             $user->save();
-            return redirect()->route('login');
+            return redirect()->route('login')->with('success', 'New password set.');
         }
     }
 }
