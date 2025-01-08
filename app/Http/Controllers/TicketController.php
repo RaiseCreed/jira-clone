@@ -2,44 +2,90 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Ticket;
 use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Models\TicketComment;
 
 class TicketController extends Controller
 {
-    // Wyświetlanie listy ticketów
-    public function index()
+    
+    public function __construct()
     {
-        $tickets = Ticket::with('attachments', 'worker')->latest()->paginate(10);
-        return view('ticket.ticket', compact('tickets'));
+        $this->middleware('auth');
+    }
+    
+    public function deleteComment(TicketComment $comment)
+    {
+        $comment->delete();
+        return redirect()->route('tickets.show', $comment->ticket_id);
     }
 
-    // Formularz tworzenia ticketa
+    public function addComment(Request $request)
+    {
+        $validated = $request->validate([
+            'comment' => 'required|string',
+            'ticket_id' => 'required|exists:tickets,id',
+        ]);
+
+        $ticket = Ticket::findOrFail($validated['ticket_id']);
+        $ticket->comments()->create([
+            'comment' => $validated['comment'],
+            'date' => now(),
+            'author_id' => auth()->id(),
+            'ticket_id' => $validated['ticket_id']
+        ]);
+
+        return redirect()->route('tickets.show', $validated['ticket_id']);
+    }
+
+    public function show($id)
+    {
+        $ticket = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->findOrFail($id);
+        $comments = $ticket->comments()->orderBy('created_at', 'desc')->get();
+        return view('tickets.show', compact('ticket', 'comments'));
+    }
+
     public function create()
     {
-        $users = User::all(); // Użytkownicy do przypisania ticketa
-        return view('ticket.edit', compact('users'));
+        $categories = \App\Models\TicketCategory::all();
+        $priorities = \App\Models\TicketPriority::all();
+        $statuses = \App\Models\TicketStatus::all();
+
+        return view('tickets.create', compact('categories', 'priorities', 'statuses'));
     }
 
-    // Tworzenie nowego ticketa
     public function store(Request $request)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'attachment' => 'nullable|file|mimes:jpg,png,pdf,docx|max:2048',
-            'assigned_to' => 'nullable|exists:users,id',
+            'content' => 'required|string',
+            'ticket_category_id' => 'required|exists:ticket_categories,id',
+            'ticket_priority_id' => 'required|exists:ticket_priorities,id',
+            'ticket_status_id' => 'required|exists:ticket_statuses,id',
+            'deadline' => 'required|date|after:now',
+            'attachment' => 'nullable|file|mimes:jpg,png,pdf,docx|max:2048'
         ]);
 
-        $ticket = Ticket::create([
+        $ticket = \App\Models\Ticket::create([
             'title' => $validated['title'],
-            'description' => $validated['description'],
-            'worker_id' => $validated['assigned_to'] ?? null,
+            'content' => $validated['content'],
+            'ticket_category_id' => $validated['ticket_category_id'],
+            'ticket_priority_id' => $validated['ticket_priority_id'],
+            'ticket_status_id' => $validated['ticket_status_id'],
+            'deadline' => $validated['deadline'],
+            'date' => now(),
+            'owner_id' => auth()->id(),
+            'worker_id' => null,
         ]);
 
+      
         if ($request->hasFile('attachment')) {
             $file = $request->file('attachment');
             $path = $file->store('attachments', 'public');
@@ -49,47 +95,41 @@ class TicketController extends Controller
                 'file_name' => $file->getClientOriginalName(),
             ]);
         }
+      
+        // Wysyłamy maila do admina
+        $user = \App\Models\User::where('role', 'admin')->first();
+        Mail::to($user->email)->send(new \App\Mail\NewTicketMail($ticket));
 
-        return redirect()->route('tickets.index')->with('success', 'Ticket został dodany.');
+        return redirect()->route('home');
     }
 
-    // Wyświetlanie ticketa
-    public function show($id)
+    public function edit(\App\Models\Ticket $ticket)
     {
-        $ticket = Ticket::with('attachments', 'worker')->findOrFail($id);
-        return view('ticket.show', compact('ticket'));
+        $categories = \App\Models\TicketCategory::all();
+        $priorities = \App\Models\TicketPriority::all();
+        $statuses = \App\Models\TicketStatus::all();
+
+        return view('tickets.edit', compact('ticket', 'categories', 'priorities', 'statuses'));
     }
 
-    // Formularz edycji ticketa
-    public function edit($id)
-    {
-        $ticket = Ticket::with('attachments', 'worker')->findOrFail($id);
-        $users = User::all();
-        return view('ticket.edit', compact('ticket', 'users'));
-    }
-
-    // Aktualizacja ticketa
-    public function update(Request $request, $id)
+    public function update(Request $request, \App\Models\Ticket $ticket)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'attachment' => 'nullable|file|mimes:jpg,png,pdf,docx|max:2048',
-            'assigned_to' => 'nullable|exists:users,id',
+            'content' => 'required|string',
+            'ticket_category_id' => 'required|exists:ticket_categories,id',
+            'ticket_priority_id' => 'required|exists:ticket_priorities,id',
+            'ticket_status_id' => 'required|exists:ticket_statuses,id',
+            'deadline' => 'required|date|after:now',
         ]);
 
-        $ticket = Ticket::findOrFail($id);
-
-        // Przypisywanie użytkownika (admin)
-        if (auth()->user()->is_admin && isset($validated['assigned_to'])) {
-            $ticket->worker_id = $validated['assigned_to'];
-        }
-
-        $ticket->update([
-            'title' => $validated['title'],
-            'description' => $validated['description'],
-        ]);
-
+        
+        //if (auth()->user()->is_admin && isset($validated['assigned_to'])) {
+        //    $ticket->assigned_to = $validated['assigned_to'];
+        //}
+      
+        $ticket->update($validated);
+      
         if ($request->hasFile('attachment')) {
             foreach ($ticket->attachments as $attachment) {
                 Storage::delete('public/' . $attachment->file_path);
@@ -104,8 +144,15 @@ class TicketController extends Controller
                 'file_name' => $file->getClientOriginalName(),
             ]);
         }
+      
+        return redirect()->route('tickets.show',$ticket->id);
+    }
 
-        return redirect()->route('tickets.index')->with('success', 'Ticket został zaktualizowany.');
+    public function destroy($id)
+    {
+        $ticket = Ticket::findOrFail($id);
+        $ticket->delete();
+        return redirect()->route('home')->with('success', 'Ticket deleted successfully.');
     }
 
     // Usuwanie ticketa
@@ -152,3 +199,4 @@ class TicketController extends Controller
         return back()->with('success', 'Załącznik został usunięty.');
     }
 }
+?>
