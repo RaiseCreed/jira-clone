@@ -36,9 +36,15 @@
                     <!-- Left Side Of Navbar -->
 
                     <ul class="navbar-nav me-auto ms-5">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/home')}}">Home</a>
+                        </li>
                         @if(Auth::user()->role == 'admin')
                         <li class="nav-item">
                             <a class="nav-link" href="{{route("workers.show")}}">Workers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route("tickets.index")}}">All tickets</a>
                         </li>
                         @endif
                     </ul>

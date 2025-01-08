@@ -57,7 +57,7 @@ class PasswordEmail extends Controller
         ])->first();
 
         if(!$update_password){
-            return redirect()->route('password.reset')->with('error', 'Invalid');
+            return redirect()->route('password.reset.new')->with('error', 'Invalid');
         }
 
         User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
