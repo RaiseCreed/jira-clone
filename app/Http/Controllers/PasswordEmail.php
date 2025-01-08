@@ -32,7 +32,7 @@ class PasswordEmail extends Controller
             'created_at' => $createdAt,
         ]);
 
-        Mail::send("emails.reset-password", ['token' => $token], function ($message) use ($request){
+        Mail::send("emails.reset-password", ['token' => $token, 'email' => $email], function ($message) use ($request){
             $message->to($request->email);
             $message->subject("Reset password");
         });
@@ -40,8 +40,8 @@ class PasswordEmail extends Controller
         return redirect()->route('workers.show')->with('success', 'Email send.');
     }
 
-    public function passwordReset($token){
-        return view('password.reset', compact('token'));
+    public function passwordReset($token, $email){
+        return view('password.reset', compact('token','email'));
     }
 
     public function passwordResetPost(Request $request){
