@@ -6,7 +6,7 @@
 
     <form action="{{ route('tickets.update', ['ticket' => $ticket->id]) }}" method="POST">
         @csrf
-        @method('PUT') <!-- Use PUT for updating -->
+        @method('PUT')
 
         <!-- Title -->
         <div class="mb-3">
@@ -82,5 +82,7 @@
 
         <button type="submit" class="btn btn-primary">Update Ticket</button>
     </form>
+
+    <a href="{{route('tickets.show', $ticket->id)}}" class="btn btn-primary mt-3">Go back</a> 
 </div>
 @endsection

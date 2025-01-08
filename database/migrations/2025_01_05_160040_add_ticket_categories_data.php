@@ -13,11 +13,11 @@ return new class extends Migration
     public function up(): void
     {
         DB::table('ticket_categories')->insert([
-            ['name' => 'Zadanie', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Pytanie', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Task', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Question', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Problem', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Błąd w programie', 'created_at' => now(), 'updated_at' => now()],
-            ['name' => 'Błąd inny', 'created_at' => now(), 'updated_at' => now()]
+            ['name' => 'Software error', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Other issue', 'created_at' => now(), 'updated_at' => now()]
         ]);
     }
 
@@ -27,7 +27,7 @@ return new class extends Migration
     public function down(): void
     {
         DB::table('ticket_categories')->whereIn('name', [
-            'Zadanie', 'Pytanie', 'Problem', 'Błąd w programie', 'Błąd inny'
+            'Task', 'Question', 'Problem', 'Software error', 'Other issue'
         ])->delete();
     }
 };
