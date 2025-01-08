@@ -1,6 +1,6 @@
 @section('statistics-admin')
 
 <div>
-    BlÄ…d dzielenia przez ogÃ³rek. Zainstaluj ponownie wszechÅ›wiat i rebootuj.
+    Bl¹d dzielenia przez ogórek. Zainstaluj ponownie wszechœwiat i rebootuj.
 </div>
 @endsection
