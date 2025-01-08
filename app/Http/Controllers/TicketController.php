@@ -112,24 +112,32 @@ class TicketController extends Controller
         return view('tickets.edit', compact('ticket', 'categories', 'priorities', 'statuses'));
     }
 
+    // Aktualizacja ticketa
     public function update(Request $request, \App\Models\Ticket $ticket)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'attachment' => 'nullable|file|mimes:jpg,png,pdf,docx|max:2048',
+            'assigned_to' => 'nullable|exists:users,id',
             'ticket_category_id' => 'required|exists:ticket_categories,id',
             'ticket_priority_id' => 'required|exists:ticket_priorities,id',
             'ticket_status_id' => 'required|exists:ticket_statuses,id',
             'deadline' => 'required|date|after:now',
         ]);
 
-        
-        //if (auth()->user()->is_admin && isset($validated['assigned_to'])) {
-        //    $ticket->assigned_to = $validated['assigned_to'];
-        //}
-      
-        $ticket->update($validated);
-      
+        $ticket = Ticket::findOrFail($id);
+
+        // Przypisywanie użytkownika (admin)
+        if (auth()->user()->is_admin && isset($validated['assigned_to'])) {
+            $ticket->worker_id = $validated['assigned_to'];
+        }
+
+        $ticket->update([
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+        ]);
+
         if ($request->hasFile('attachment')) {
             foreach ($ticket->attachments as $attachment) {
                 Storage::delete('public/' . $attachment->file_path);
@@ -144,8 +152,8 @@ class TicketController extends Controller
                 'file_name' => $file->getClientOriginalName(),
             ]);
         }
-      
-        return redirect()->route('tickets.show',$ticket->id);
+
+        return redirect()->route('tickets.show')->with('success', 'Ticket has been updated.');
     }
 
     public function destroy($id)
@@ -154,7 +162,7 @@ class TicketController extends Controller
         $ticket->delete();
         return redirect()->route('home')->with('success', 'Ticket deleted successfully.');
     }
-
+    
     // Usuwanie ticketa
     public function destroy($id)
     {
