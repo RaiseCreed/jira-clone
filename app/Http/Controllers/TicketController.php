@@ -21,6 +21,19 @@ class TicketController extends Controller
         $this->middleware('auth');
     }
     
+    public function assignWorker($id, Request $request){
+        $ticket = Ticket::findOrFail($id);
+        $ticket->worker_id = $request->selectedWorker;
+        $ticket->save();
+
+        // Wysyłamy maila do pracownika
+        $worker = User::findOrFail($request->selectedWorker);
+        if($worker) 
+            Mail::to($worker->email)->send(new \App\Mail\NewAssignedTicketMail($ticket));
+
+        return redirect()->route('tickets.show', $id);
+    }
+
     public function deleteComment(TicketComment $comment)
     {
         $comment->delete();
@@ -44,16 +57,10 @@ class TicketController extends Controller
 
         return redirect()->route('tickets.show', $validated['ticket_id']);
     }
-
-    public function index()
-    {
-        $tickets = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->get();
-        return view('tickets.index', compact('tickets'));
-    }
     
     public function show($id)
     {
-        $ticket = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->findOrFail($id);
+        $ticket = Ticket::findOrFail($id);
         $comments = $ticket->comments()->orderBy('created_at', 'desc')->get();
         return view('tickets.show', compact('ticket', 'comments'));
     }
@@ -90,18 +97,6 @@ class TicketController extends Controller
             'owner_id' => auth()->id(),
             'worker_id' => null,
         ]);
-
-      
-        // BartekChanges
-        // if ($request->hasFile('attachment')) {
-        //     $file = $request->file('attachment');
-        //     $path = $file->store('attachments', 'public');
-
-        //     $ticket->attachments()->create([
-        //         'file_path' => $path,
-        //         'file_name' => $file->getClientOriginalName(),
-        //     ]);
-        // }
       
         // Wysyłamy maila do admina
         $user = \App\Models\User::where('role', 'admin')->first();
@@ -207,4 +202,6 @@ class TicketController extends Controller
 
          return back()->with('success', 'Załącznik został usunięty.');
     }
+
+}
 ?>
