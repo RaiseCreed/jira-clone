@@ -126,8 +126,6 @@ class TicketController extends Controller
             'deadline' => 'required|date|after:now',
         ]);
 
-        $ticket = Ticket::findOrFail($id);
-
         // Przypisywanie użytkownika (admin)
         if (auth()->user()->is_admin && isset($validated['assigned_to'])) {
             $ticket->worker_id = $validated['assigned_to'];
@@ -153,16 +151,8 @@ class TicketController extends Controller
             ]);
         }
 
-        return redirect()->route('tickets.show')->with('success', 'Ticket has been updated.');
+        return redirect()->ute('tickets.show')->with('success', 'Ticket has been updated.');
     }
-
-    public function destroy($id)
-    {
-        $ticket = Ticket::findOrFail($id);
-        $ticket->delete();
-        return redirect()->route('home')->with('success', 'Ticket deleted successfully.');
-    }
-    
     // Usuwanie ticketa
     public function destroy($id)
     {
@@ -172,10 +162,8 @@ class TicketController extends Controller
             Storage::delete('public/' . $attachment->file_path);
             $attachment->delete();
         }
-
         $ticket->delete();
-
-        return redirect()->route('tickets.index')->with('success', 'Ticket został usunięty.');
+        return redirect()->route('tickets.show')->with('success', 'Ticket został usunięty.');
     }
 
     // Dodawanie załącznika do istniejącego ticketa

@@ -52,3 +52,5 @@ Route::delete('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'd
 Route::post('/tickets/add-command', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
 Route::delete('/tickets/delete-command/{comment}', [App\Http\Controllers\TicketController::class, 'deleteComment'])->name('tickets.delete-comment');
 
+//Zwrócone dane do widoku który trzeba zrobic jeszcze
+Route::get('/dashboard-data', [App\Http\Controllers\HomeController::class, 'getDashboardData'])->name('dashboard.data');
