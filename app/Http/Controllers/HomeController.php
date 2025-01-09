@@ -40,9 +40,10 @@ class HomeController extends Controller
             case 'worker':
                 $query->where('worker_id', $user->id);
                 break;
-            case 'admin':
-                $query->where('worker_id', null);
-                break;
+        }
+
+        if ($user->role === 'admin' && !$request->has('worker')) {
+            $request->merge(['worker' => 'unassigned']);
         }
 
         if ($request->has('title') && $request->title != '') {
@@ -65,6 +66,15 @@ class HomeController extends Controller
             $query->whereDate('deadline', $request->deadline);
         }
 
+        if ($request->has('worker') && $request->worker != '') {
+            if($request->worker == 'unassigned') {
+                $query->whereNull('worker_id');
+            } else {
+                $query->where('worker_id', $request->worker);
+            }
+        }
+        
+
         $tickets = $query->paginate(3);
         $categories = TicketCategory::all();
         $priorities = TicketPriority::all();
@@ -85,15 +95,40 @@ class HomeController extends Controller
             return $worker;
         });
 
+        $quote = self::getQuote();
         return view('home', [
             'tickets' => $tickets,
             'categories' => $categories,
             'priorities' => $priorities,
             'statuses' => $statuses,
-            'workers' => $workers
+            'workers' => $workers,
+            'quote' => $quote,
         ]);
     }
   
+    private static function getQuote()
+    {
+        $apikey = env('API_KEY');
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.api-ninjas.com/v1/quotes',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                "X-Api-Key: $apikey"
+            ),
+        ));
+
+        $response = json_decode(curl_exec($curl));
+        curl_close($curl);
+        return $response[0];
+    }
+
     public function getDashboardData()
     {
         $user = Auth::user();

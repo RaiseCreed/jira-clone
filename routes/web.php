@@ -52,7 +52,6 @@ Route::post('/password/set', [App\Http\Controllers\UserController::class, 'passw
 Route::delete('/users/{email}', [App\Http\Controllers\UserController::class, 'deleteUser'])->name('users.delete');
 
 // Widoki ticketów
-Route::get('/tickets', [App\Http\Controllers\TicketController::class, 'index'])->name('tickets.index');
 Route::get('/tickets/create', [App\Http\Controllers\TicketController::class, 'create'])->name('tickets.create');
 Route::get('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'show'])->name('tickets.show');
 Route::post('/tickets', [App\Http\Controllers\TicketController::class, 'store'])->name('tickets.store');

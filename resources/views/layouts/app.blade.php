@@ -48,9 +48,6 @@
                         </li><li class="nav-item">
                             <a class="nav-link" href="{{route('users.add')}}">Add user</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{route("tickets.index")}}">All tickets</a>
-                        </li>
                         @endif
                         @if(auth()->user()->isCustomer())
                         <li class="nav-item">

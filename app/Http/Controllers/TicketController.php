@@ -57,12 +57,6 @@ class TicketController extends Controller
 
         return redirect()->route('tickets.show', $validated['ticket_id']);
     }
-
-    public function index()
-    {
-        $tickets = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->get();
-        return view('tickets.index', compact('tickets'));
-    }
     
     public function show($id)
     {
@@ -103,18 +97,6 @@ class TicketController extends Controller
             'owner_id' => auth()->id(),
             'worker_id' => null,
         ]);
-
-      
-        // BartekChanges
-        // if ($request->hasFile('attachment')) {
-        //     $file = $request->file('attachment');
-        //     $path = $file->store('attachments', 'public');
-
-        //     $ticket->attachments()->create([
-        //         'file_path' => $path,
-        //         'file_name' => $file->getClientOriginalName(),
-        //     ]);
-        // }
       
         // Wysyłamy maila do admina
         $user = \App\Models\User::where('role', 'admin')->first();
@@ -220,4 +202,6 @@ class TicketController extends Controller
 
          return back()->with('success', 'Załącznik został usunięty.');
     }
+
+}
 ?>
