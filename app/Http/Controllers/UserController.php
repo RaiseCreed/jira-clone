@@ -56,7 +56,15 @@ class UserController extends Controller
         if($user){
             $user->password = Hash::make($request->input('password'));
             $user->save();
-            return redirect()->route('login');
+            return redirect()->route('login')->with('success', 'New password set.');
         }
+    }
+
+    public function deleteUser($email){
+        $user = User::where('email', $email)->first();
+        $user_name = $user->name;
+        $user->delete();
+
+        return redirect()->route('home')->with('success', 'User ' . $user_name . ' deleted');
     }
 }

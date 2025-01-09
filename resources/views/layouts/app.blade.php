@@ -18,7 +18,7 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
-<body>
+<body style="background-color: rgb(247, 247, 245)">
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light nj-nav-bar shadow-sm">
             <div class="container">
@@ -34,6 +34,30 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
+
+                    <ul class="navbar-nav me-auto ms-5">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('/home')}}">Home</a>
+                        </li>
+                        @if(Auth::user()->role == 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('workers.show')}}">Workers</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route('customers.show')}}">Customers</a>
+                        </li><li class="nav-item">
+                            <a class="nav-link" href="{{route('users.add')}}">Add user</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{route("tickets.index")}}">All tickets</a>
+                        </li>
+                        @endif
+                        @if(auth()->user()->isCustomer())
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('tickets.create') }}">Create ticket</a>
+                        </li>
+                        @endif
+                    </ul>
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
