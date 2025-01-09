@@ -14,7 +14,14 @@
                 <div class="card-body">
                     @if(auth()->user()->isAdmin())
                     @yield('statistics-admin')
-                    Bląd dzielenia przez ogórek. Zainstaluj ponownie wszechświat i rebootuj.
+                        Team workload:
+                        <table class="table">
+                            <tbody>
+                                @foreach ($workers as $worker)
+                                    <p>{{ $worker->name }}: {{ $worker->workload_percentage }}%</p>
+                                @endforeach
+                            </tbody>
+                        </table>
                     @elseif(auth()->user()->isWorker())
                     @yield('statistics-worker')
                     @elseif(auth()->user()->isCustomer())
@@ -26,6 +33,11 @@
             </div>
         </div>
     </div>
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="col-md-8">
         <div class=" card">
             
@@ -38,19 +50,54 @@
             @endif
             
             <div class="card-body">
-
-                @if(auth()->user()->isCustomer())
-                    <a href="{{ route('tickets.create') }}" class="col-12 col-sm-auto btn btn-primary mt-3 float-end">
-                        <i class="bi bi-plus me-1"></i>Add
-                    </a>
-                @endif
-
                 @if (session('status'))
                 <div class="alert alert-success" role="alert">
                     {{ session('status') }}
                 </div>
                 @endif
-
+                <form method="GET" action="{{ route('home') }}" class="mb-4">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="text" name="title" class="form-control" placeholder="Ticket name" value="{{ request('title') }}">
+                        </div>
+                        <div class="col-md-2">
+                            <select name="category" class="form-control">
+                                <option value="">Category</option>
+                                @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ request('category') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="priority" class="form-control">
+                                <option value="">Priority</option>
+                                @foreach($priorities as $priority)
+                                <option value="{{ $priority->id }}" {{ request('priority') == $priority->id ? 'selected' : '' }}>
+                                    {{ $priority->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select name="status" class="form-control">
+                                <option value="">Status</option>
+                                @foreach($statuses as $status)
+                                <option value="{{ $status->id }}" {{ request('status') == $status->id ? 'selected' : '' }}>
+                                    {{ $status->name }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="date" name="deadline" class="form-control" value="{{ request('deadline') }}">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-primary">Filter</button>
+                        </div>
+                    </div>
+                </form>
                 <table class="table">
                     <thead>
                         <tr>
@@ -88,6 +135,7 @@
                         @endforeach
                     </tbody>
                 </table>
+                {{ $tickets->links()}}
             </div>
         </div>
     </div>
