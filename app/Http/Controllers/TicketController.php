@@ -136,7 +136,7 @@ class TicketController extends Controller
 
         $ticket->update([
             'title' => $validated['title'],
-            'description' => $validated['description'],
+            'content' => $validated['content'],
         ]);
 
         if ($request->hasFile('attachment')) {
