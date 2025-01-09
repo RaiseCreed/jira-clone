@@ -63,3 +63,5 @@ Route::delete('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'd
 
 
 
+//Zwrócone dane do widoku który trzeba zrobic jeszcze
+Route::get('/dashboard-data', [App\Http\Controllers\HomeController::class, 'getDashboardData'])->name('dashboard.data');
