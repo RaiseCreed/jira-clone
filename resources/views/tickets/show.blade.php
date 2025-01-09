@@ -37,7 +37,7 @@
             <p>Change phase</p>
 
             {{-- Dodawanie komentarza --}}
-            <form action="{{route("tickets.add-comment")}}" method="POST">
+            <form action="{{route(" tickets.add-comment")}}" method="POST">
                 @csrf
                 <input type="text" name="comment" id="comment" placeholder="Comment">
                 <input type="hidden" name="ticket_id" value="{{$ticket->id}}">

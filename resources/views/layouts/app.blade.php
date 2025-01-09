@@ -45,11 +45,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('customers.show')}}">Customers</a>
-                        </li><li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{route('users.add')}}">Add user</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{route("tickets.index")}}">All tickets</a>
+                            <a class="nav-link" href="{{route('tickets.index')}}">All tickets</a>
                         </li>
                         @endif
                         @if(auth()->user()->isCustomer())

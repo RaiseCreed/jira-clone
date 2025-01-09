@@ -1,6 +1,13 @@
 @section('statistics-admin')
 
 <div>
-    Bl¹d dzielenia przez ogórek. Zainstaluj ponownie wszechœwiat i rebootuj.
+    Team workload:
+    <table class="table">
+        <tbody>
+            @foreach ($workers as $worker)
+            <p>{{ $worker->name }}: {{ $worker->workload_percentage }}%</p>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 @endsection
