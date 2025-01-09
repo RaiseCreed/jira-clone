@@ -25,7 +25,7 @@ class Ticket extends Model
         'deadline',
         'date_end',
         'content',
-        'description',
+       // 'description',
         'assigned_to', 
     ];
 
