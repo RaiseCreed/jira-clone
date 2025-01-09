@@ -32,16 +32,16 @@ class PasswordEmail extends Controller
             'created_at' => $createdAt,
         ]);
 
-        Mail::send("emails.reset-password", ['token' => $token], function ($message) use ($request){
+        Mail::send("emails.reset-password", ['token' => $token, 'email' => $email], function ($message) use ($request){
             $message->to($request->email);
             $message->subject("Reset password");
         });
 
-        return redirect()->route('workers.show')->with('success', 'Email send.');
+        return redirect()->route('home')->with('success', 'Email send.');
     }
 
-    public function passwordReset($token){
-        return view('password.reset', compact('token'));
+    public function passwordReset($token, $email){
+        return view('password.reset', compact('token','email'));
     }
 
     public function passwordResetPost(Request $request){
@@ -57,13 +57,13 @@ class PasswordEmail extends Controller
         ])->first();
 
         if(!$update_password){
-            return redirect()->route('password.reset')->with('error', 'Invalid');
+            return redirect()->route('password.reset.new')->with('error', 'Invalid');
         }
 
         User::where('email', $request->email)->update(['password' => Hash::make($request->password)]);
 
         DB::table('password_reset_tokens')->where(['email' => $request->email])->delete();
 
-        return redirect()->route('login');
+        return redirect()->route('login')->with('success', 'New password set.');
     }
 }

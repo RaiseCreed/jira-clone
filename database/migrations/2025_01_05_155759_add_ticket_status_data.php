@@ -19,6 +19,7 @@ return new class extends Migration
             ['name' => 'Testing', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Ready', 'created_at' => now(), 'updated_at' => now()],
             ['name' => 'Closed', 'created_at' => now(), 'updated_at' => now()],
+            ['name' => 'Rejected', 'created_at' => now(), 'updated_at' => now()],
         ]);
     }
 
@@ -28,7 +29,7 @@ return new class extends Migration
     public function down(): void
     {
         DB::table('ticket_statuses')->whereIn('name', [
-            'New', 'Analysis', 'Ongoing', 'Testing', 'Ready', 'Closed'
+            'New', 'Analysis', 'Ongoing', 'Testing', 'Ready', 'Closed', 'Rejected'
         ])->delete();
     }
 };

@@ -45,6 +45,12 @@ class TicketController extends Controller
         return redirect()->route('tickets.show', $validated['ticket_id']);
     }
 
+    public function index()
+    {
+        $tickets = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->get();
+        return view('tickets.index', compact('tickets'));
+    }
+    
     public function show($id)
     {
         $ticket = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->findOrFail($id);
@@ -86,19 +92,21 @@ class TicketController extends Controller
         ]);
 
       
-        if ($request->hasFile('attachment')) {
-            $file = $request->file('attachment');
-            $path = $file->store('attachments', 'public');
+        // BartekChanges
+        // if ($request->hasFile('attachment')) {
+        //     $file = $request->file('attachment');
+        //     $path = $file->store('attachments', 'public');
 
-            $ticket->attachments()->create([
-                'file_path' => $path,
-                'file_name' => $file->getClientOriginalName(),
-            ]);
-        }
+        //     $ticket->attachments()->create([
+        //         'file_path' => $path,
+        //         'file_name' => $file->getClientOriginalName(),
+        //     ]);
+        // }
       
         // Wysyłamy maila do admina
         $user = \App\Models\User::where('role', 'admin')->first();
-        Mail::to($user->email)->send(new \App\Mail\NewTicketMail($ticket));
+        if($user) 
+            Mail::to($user->email)->send(new \App\Mail\NewTicketMail($ticket));
 
         return redirect()->route('home');
     }
@@ -126,7 +134,7 @@ class TicketController extends Controller
             'deadline' => 'required|date|after:now',
         ]);
 
-        // Przypisywanie użytkownika (admin)
+
         if (auth()->user()->is_admin && isset($validated['assigned_to'])) {
             $ticket->worker_id = $validated['assigned_to'];
         }
@@ -150,9 +158,13 @@ class TicketController extends Controller
                 'file_name' => $file->getClientOriginalName(),
             ]);
         }
-
-        return redirect()->ute('tickets.show')->with('success', 'Ticket has been updated.');
+      
+        $ticket->update($validated);
+      
+     
+        return redirect()->route('tickets.show',$ticket->id);
     }
+  
     // Usuwanie ticketa
     public function destroy($id)
     {
@@ -192,7 +204,7 @@ class TicketController extends Controller
         Storage::delete('public/' . $attachment->file_path);
         $attachment->delete();
 
-        return back()->with('success', 'Załącznik został usunięty.');
+
+         return back()->with('success', 'Załącznik został usunięty.');
     }
-}
 ?>
