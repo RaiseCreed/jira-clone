@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\admin;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\HomeController;
 
 
 Route::get('/', function () {
@@ -62,5 +63,6 @@ Route::delete('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'd
 
 
 
-//Zwrócone dane do widoku który trzeba zrobic jeszcze
-Route::get('/dashboard-data', [App\Http\Controllers\HomeController::class, 'getDashboardData'])->name('dashboard.data');
+
+//pobieranie danych do dashboardu
+Route::get//('', [HomeController::class, 'dashboardDataArray'])->name('');
