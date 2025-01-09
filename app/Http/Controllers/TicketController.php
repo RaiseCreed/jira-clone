@@ -21,6 +21,19 @@ class TicketController extends Controller
         $this->middleware('auth');
     }
     
+    public function assignWorker($id, Request $request){
+        $ticket = Ticket::findOrFail($id);
+        $ticket->worker_id = $request->selectedWorker;
+        $ticket->save();
+
+        // Wysyłamy maila do pracownika
+        $worker = User::findOrFail($request->selectedWorker);
+        if($worker) 
+            Mail::to($worker->email)->send(new \App\Mail\NewAssignedTicketMail($ticket));
+
+        return redirect()->route('tickets.show', $id);
+    }
+
     public function deleteComment(TicketComment $comment)
     {
         $comment->delete();
@@ -53,7 +66,7 @@ class TicketController extends Controller
     
     public function show($id)
     {
-        $ticket = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->findOrFail($id);
+        $ticket = Ticket::findOrFail($id);
         $comments = $ticket->comments()->orderBy('created_at', 'desc')->get();
         return view('tickets.show', compact('ticket', 'comments'));
     }

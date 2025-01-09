@@ -56,6 +56,7 @@ Route::get('/tickets', [App\Http\Controllers\TicketController::class, 'index'])-
 Route::get('/tickets/create', [App\Http\Controllers\TicketController::class, 'create'])->name('tickets.create');
 Route::get('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'show'])->name('tickets.show');
 Route::post('/tickets', [App\Http\Controllers\TicketController::class, 'store'])->name('tickets.store');
+Route::post('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'assignWorker'])->name('tickets.assignWorker');
 Route::get('/tickets/{ticket}/edit', [App\Http\Controllers\TicketController::class, 'edit'])->name('tickets.edit');
 Route::put('/tickets/{ticket}', [App\Http\Controllers\TicketController::class, 'update'])->name('tickets.update');
 Route::delete('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'destroy'])->name('tickets.destroy');
