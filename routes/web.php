@@ -65,4 +65,4 @@ Route::delete('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'd
 
 
 //pobieranie danych do dashboardu
-Route::get//('', [HomeController::class, 'dashboardDataArray'])->name('');
+// Route::get('', [HomeController::class, 'dashboardDataArray'])->name('');

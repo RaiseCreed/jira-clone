@@ -128,9 +128,11 @@ class HomeController extends Controller
 
         $response = json_decode(curl_exec($curl));
         curl_close($curl);
-        return $response[0];
+        //todo sprawdzenie pól?
+        if (is_array($response)) { 
+            return $response[0];
+        }
     }
-
 
     public function dashboardDataArray()
     {
@@ -183,7 +185,6 @@ class HomeController extends Controller
         ];
     }
     
-    }
     public static function addMockData()
     {
          // Tworzenie przykładowych kategorii, priorytetów i statusów
@@ -211,7 +212,7 @@ class HomeController extends Controller
           ]);
           $status3 = TicketStatus::create([
           'name' => 'w oczekiwaniu na odpowiedz'
-           ])               
+          ]);               
                          
 
         // Tworzenie przykładowych użytkowników
@@ -350,46 +351,47 @@ class HomeController extends Controller
 
     }
     public static function removeMockData()
-{
-    // Usuń tickety na podstawie ich tytułów
-    Ticket::whereIn('title', [
-        'Błąd w aplikacji',
-        'Błąd w formularzu logowania',
-        'Brak dostępu do panelu administracyjnego',
-        'Reset hasła nie działa',
-        'Integracja z zewnętrznym API',
-        'Problem z realizacją płatności',
-    ])->delete();
+    {
+        // Usuń tickety na podstawie ich tytułów
+        Ticket::whereIn('title', [
+            'Błąd w aplikacji',
+            'Błąd w formularzu logowania',
+            'Brak dostępu do panelu administracyjnego',
+            'Reset hasła nie działa',
+            'Integracja z zewnętrznym API',
+            'Problem z realizacją płatności',
+        ])->delete();
 
-    // Usuń użytkowników na podstawie emaili
-    User::whereIn('email', [
-        'customer@example.com',
-        'batoszkam@wp.pl',
-        'osinski@gmail.com',
-        'Annanowak@example.com',
-        'Polak@example.com',
-    ])->delete();
+        // Usuń użytkowników na podstawie emaili
+        User::whereIn('email', [
+            'customer@example.com',
+            'batoszkam@wp.pl',
+            'osinski@gmail.com',
+            'Annanowak@example.com',
+            'Polak@example.com',
+        ])->delete();
 
-    // Usuń komentarze 
-    TicketComment::whereIn('content', [
-        'Zbadam ten problem i wrócę z rozwiązaniem.',
-        'Dziękuję za szybką reakcję.',
-        'Problem zidentyfikowany. Aktualizuję kod aplikacji.',
-        'Sprawdzam dostępność panelu administracyjnego.',
-        'Proszę o pilne rozwiązanie tego problemu.',
-        'Naprawiono. Panel jest już dostępny.',
-        'Przycisk resetowania hasła wymaga poprawy w backendzie.',
-        'Kiedy mogę się spodziewać rozwiązania?',
-        'Poprawka zostanie wdrożona do końca dnia.',
-        'Integracja z API partnera wymaga dodatkowej dokumentacji.',
-        'Dostarczę dokumentację API w najbliższym czasie.',
-        'Prace rozpoczną się, gdy dokumentacja będzie dostępna.',
-        'Problem z realizacją płatności sprawdzony w systemie.',
-        'Czy mogę prosić o zwrot środków?',
-        'Środki zostaną zwrócone w ciągu 3 dni roboczych.',
-    ])->delete();
+        // Usuń komentarze 
+        TicketComment::whereIn('content', [
+            'Zbadam ten problem i wrócę z rozwiązaniem.',
+            'Dziękuję za szybką reakcję.',
+            'Problem zidentyfikowany. Aktualizuję kod aplikacji.',
+            'Sprawdzam dostępność panelu administracyjnego.',
+            'Proszę o pilne rozwiązanie tego problemu.',
+            'Naprawiono. Panel jest już dostępny.',
+            'Przycisk resetowania hasła wymaga poprawy w backendzie.',
+            'Kiedy mogę się spodziewać rozwiązania?',
+            'Poprawka zostanie wdrożona do końca dnia.',
+            'Integracja z API partnera wymaga dodatkowej dokumentacji.',
+            'Dostarczę dokumentację API w najbliższym czasie.',
+            'Prace rozpoczną się, gdy dokumentacja będzie dostępna.',
+            'Problem z realizacją płatności sprawdzony w systemie.',
+            'Czy mogę prosić o zwrot środków?',
+            'Środki zostaną zwrócone w ciągu 3 dni roboczych.',
+        ])->delete();
 
-    TicketCategory::whereIn('name', ['Błąd', 'Usprawnienia'])->delete();
-    TicketPriority::whereIn('name', ['Wysoki', 'średni', 'niski'])->delete();
-    TicketStatus::whereIn('name', ['W trakcie', 'nowy', 'w oczekiwaniu na odpowiedz'])->delete();
+        TicketCategory::whereIn('name', ['Błąd', 'Usprawnienia'])->delete();
+        TicketPriority::whereIn('name', ['Wysoki', 'średni', 'niski'])->delete();
+        TicketStatus::whereIn('name', ['W trakcie', 'nowy', 'w oczekiwaniu na odpowiedz'])->delete();
+    }
 }
