@@ -95,6 +95,20 @@
                                     value="{{ request('deadline') }}">
                             </div>
                             <div class="col-auto">
+                                {{request('statuses')}}
+                                <select name="worker" class="form-control">
+                                    <option value="">Worker</option>
+                                    <option value="unassigned" {{ request('worker')=='unassigned' ? 'selected' : '' }}>
+                                        Not assigned</option>
+                                    @foreach($workers as $worker)
+                                    <option value="{{ $worker->id }}" {{ request('worker')==$worker->id ? 'selected' :
+                                        ''}}>
+                                        {{ $worker->name }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-auto">
                                 <button type="submit" class="btn btn-primary">Filter</button>
                             </div>
                         </div>
@@ -110,38 +124,51 @@
                                     <th scope="col">Status</th>
                                     <th scope="col">Issued by</th>
                                     <th scope="col">Deadline</th>
+                                    @if(auth()->user()->isAdmin())
+                                    <th scope="col">Assigned worker</th>
+                                    @endif
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                $i = 1;
-                                @endphp
-                                @foreach($tickets as $ticket)
+                                @foreach($tickets as $key => $ticket)
                                 <tr>
-                                    <th scope="row">{{$i}}</th>
+                                    <th scope="row">{{ ($tickets->currentpage()-1) * $tickets->perpage() + $key + 1 }}
+                                    </th>
                                     <td>{{$ticket->title}}</td>
                                     <td>{{$ticket->category->name}}</td>
                                     <td>{{$ticket->priority->name}}</td>
                                     <td>{{$ticket->status->name}}</td>
                                     <td>{{$ticket->owner->name}}</td>
                                     <td>{{$ticket->deadline}}</td>
+                                    @if(auth()->user()->isAdmin())
+                                    <td>{{($ticket->worker) ? $ticket->worker->name : "Not assigned" }}</td>
+                                    @endif
                                     <td>
                                         <a href="{{route('tickets.show', $ticket->id)}}" class="btn btn-primary">Show
                                             details</a>
                                     </td>
                                 </tr>
-                                @php
-                                $i++;
-                                @endphp
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    {{ $tickets->links()}}
+                    {{ $tickets->appends($_GET)->links() }}
                 </div>
             </div>
         </div>
+        @isset($qoute)
+        <div class="row">
+            <div class="col-md-8 mt-4">
+                <div class="card text-center">
+                    <div class="card-header">Random Quote</div>
+                    <div class="card-body">
+                        "{{$quote->quote}}" ~ {{$quote->author}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endisset
     </div>
 </div>
 @endsection

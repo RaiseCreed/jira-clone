@@ -5,6 +5,21 @@
     <div class="card">
         <div class="card-header">Ticket details</div>
         <div class="card-body">
+
+            {{-- Przypisanie workera do wykonania ticketa --}}
+            @if(Auth::user()->isAdmin() && !$ticket->worker)
+                <h1 style="color: red">This ticket has no assigned staff member! Select who should handle this ticket:</h1>
+                <form action="{{ route('tickets.assignWorker', $ticket->id) }}" method="POST">
+                    @csrf
+                    <select name="selectedWorker">
+                        @foreach(App\Models\User::where('role','worker')->get() as $worker)
+                            <option value="{{$worker->id}}">{{$worker->name}}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="btn btn-danger">Assign</button>
+                </form>
+            @endif
+
             Nazwa: {{$ticket->title}} <br>
 
             Kategoria: {{$ticket->category->name}} <br>
@@ -18,6 +33,10 @@
             Opis: {{$ticket->content}} <br>
 
             Utwrzono: {{$ticket->created_at}} <br>
+
+            @if(Auth::user()->isAdmin() && $ticket->worker)
+            Odpowiedzialny: {{$ticket->worker->name}} <br>
+            @endif
 
             <p><a href="{{ route('home') }}">Go back</a></p>
 

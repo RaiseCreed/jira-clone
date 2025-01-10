@@ -21,6 +21,19 @@ class TicketController extends Controller
         $this->middleware('auth');
     }
     
+    public function assignWorker($id, Request $request){
+        $ticket = Ticket::findOrFail($id);
+        $ticket->worker_id = $request->selectedWorker;
+        $ticket->save();
+
+        // Wysyłamy maila do pracownika
+        $worker = User::findOrFail($request->selectedWorker);
+        if($worker) 
+            Mail::to($worker->email)->send(new \App\Mail\NewAssignedTicketMail($ticket));
+
+        return redirect()->route('tickets.show', $id);
+    }
+
     public function deleteComment(TicketComment $comment)
     {
         $comment->delete();
@@ -44,16 +57,10 @@ class TicketController extends Controller
 
         return redirect()->route('tickets.show', $validated['ticket_id']);
     }
-
-    public function index()
-    {
-        $tickets = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->get();
-        return view('tickets.index', compact('tickets'));
-    }
     
     public function show($id)
     {
-        $ticket = Ticket::with(['category', 'priority', 'status', 'owner', 'worker'])->findOrFail($id);
+        $ticket = Ticket::findOrFail($id);
         $comments = $ticket->comments()->orderBy('created_at', 'desc')->get();
         return view('tickets.show', compact('ticket', 'comments'));
     }
@@ -90,18 +97,6 @@ class TicketController extends Controller
             'owner_id' => auth()->id(),
             'worker_id' => null,
         ]);
-
-      
-        // BartekChanges
-        // if ($request->hasFile('attachment')) {
-        //     $file = $request->file('attachment');
-        //     $path = $file->store('attachments', 'public');
-
-        //     $ticket->attachments()->create([
-        //         'file_path' => $path,
-        //         'file_name' => $file->getClientOriginalName(),
-        //     ]);
-        // }
       
         // Wysyłamy maila do admina
         $user = \App\Models\User::where('role', 'admin')->first();
@@ -120,59 +115,93 @@ class TicketController extends Controller
         return view('tickets.edit', compact('ticket', 'categories', 'priorities', 'statuses'));
     }
 
+    // Aktualizacja ticketa
     public function update(Request $request, \App\Models\Ticket $ticket)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'required|string',
+            'attachment' => 'nullable|file|mimes:jpg,png,pdf,docx|max:2048',
+            'assigned_to' => 'nullable|exists:users,id',
             'ticket_category_id' => 'required|exists:ticket_categories,id',
             'ticket_priority_id' => 'required|exists:ticket_priorities,id',
             'ticket_status_id' => 'required|exists:ticket_statuses,id',
             'deadline' => 'required|date|after:now',
         ]);
 
-        
-        // BartekChanges
-        //if (auth()->user()->is_admin && isset($validated['assigned_to'])) {
-        //    $ticket->assigned_to = $validated['assigned_to'];
-        //}
+
+        if (auth()->user()->is_admin && isset($validated['assigned_to'])) {
+            $ticket->worker_id = $validated['assigned_to'];
+        }
+
+        $ticket->update([
+            'title' => $validated['title'],
+            'content' => $validated['content'],
+        ]);
+
+        if ($request->hasFile('attachment')) {
+            foreach ($ticket->attachments as $attachment) {
+                Storage::delete('public/' . $attachment->file_path);
+                $attachment->delete();
+            }
+
+            $file = $request->file('attachment');
+            $path = $file->store('attachments', 'public');
+
+            $ticket->attachments()->create([
+                'file_path' => $path,
+                'file_name' => $file->getClientOriginalName(),
+            ]);
+        }
       
         $ticket->update($validated);
       
-        // BartekChanges
-        // if ($request->hasFile('attachment')) {
-        //     $file = $request->file('attachment');
-        //     $path = $file->store('attachments', 'public');
-
-            
-        //     $ticket->attachments()->create([
-        //         'file_path' => $path,
-        //         'file_name' => $file->getClientOriginalName(),
-        //     ]);
-        // }
-      
+     
         return redirect()->route('tickets.show',$ticket->id);
     }
-
+  
+    // Usuwanie ticketa
     public function destroy($id)
     {
         $ticket = Ticket::findOrFail($id);
+
+        foreach ($ticket->attachments as $attachment) {
+            Storage::delete('public/' . $attachment->file_path);
+            $attachment->delete();
+        }
         $ticket->delete();
-        return redirect()->route('home')->with('success', 'Ticket deleted successfully.');
+        return redirect()->route('tickets.show')->with('success', 'Ticket został usunięty.');
     }
 
-    // BartekChanges
-    // Metoda do usuwania załączników
-    // public function destroyAttachment($ticketId, $attachmentId)
-    // {
-    //     $ticket = Ticket::findOrFail($ticketId);
-    //     $attachment = Attachment::findOrFail($attachmentId);
+    // Dodawanie załącznika do istniejącego ticketa
+    public function addAttachment(Request $request, $ticketId)
+    {
+        $request->validate([
+            'attachment' => 'required|file|mimes:jpg,png,pdf,docx|max:2048',
+        ]);
 
-    //     Storage::delete('public/' . $attachment->file_path);
+        $ticket = Ticket::findOrFail($ticketId);
+        $file = $request->file('attachment');
+        $path = $file->store('attachments', 'public');
 
-    //     $attachment->delete();
+        $ticket->attachments()->create([
+            'file_path' => $path,
+            'file_name' => $file->getClientOriginalName(),
+        ]);
 
-    //     return back()->with('success', 'Załącznik został usunięty.');
-    // }
+        return back()->with('success', 'Załącznik został dodany.');
+    }
+
+    // Usuwanie załącznika
+    public function destroyAttachment($ticketId, $attachmentId)
+    {
+        $attachment = Attachment::findOrFail($attachmentId);
+        Storage::delete('public/' . $attachment->file_path);
+        $attachment->delete();
+
+
+         return back()->with('success', 'Załącznik został usunięty.');
+    }
+
 }
 ?>
