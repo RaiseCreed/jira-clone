@@ -7,7 +7,6 @@
         <div class="card-body">
             <form class="row" method="POST" action="{{ route('users.add.post') }}">
                 @csrf
-
                 <div class="form-group mb-3">
                     <label for="name">Name</label>
                     <input id="name" type="text" class="form-control" name="name" required autocomplete="name"
