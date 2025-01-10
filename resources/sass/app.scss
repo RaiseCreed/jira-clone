@@ -21,10 +21,6 @@ $focus-ring-width: .1rem;
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
-.row {
-    margin-right: 0px;
-    margin-left: 0px;
-}
 
 main>.nj-container {
     @extend .container;
@@ -34,6 +30,15 @@ main>.nj-container {
         @extend .col-12; 
         @extend .col-md-8;
         @extend .col-lg-6;
+    }
+}
+
+main>.nj-container-list {
+    @extend .container;
+    @extend .d-flex; 
+    @extend .justify-content-center;
+    >.card {
+        @extend .col-12;
     }
 }
 
@@ -77,26 +82,42 @@ main>.nj-container {
 }
 
 .nj-button-row {
-    @extend .row;
-    @extend .justify-content-between;
-    [class^="nj-button-"]:not(:first-child) {
-        @extend .mt-sm-0;
-        @extend .mt-3
-    }
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    @extend.gap-3;
 }
 
-.nj-button-primary {
+.nj-button-row-table {
+    display: flex;
+    flex-wrap: wrap;
+    @extend .gap-1;
+    form {
+        @extend .col-sm-auto;
+        @extend .col-12;
+    }
+    @extend .justify-content-start;
+}
+
+%nj-button {
     @extend .col-12;
     @extend .col-sm-auto;
     @extend .btn;
+  }
+
+.nj-button-red {
+   @extend %nj-button;
+   @extend .btn-danger;
+}
+
+.nj-button-primary {
+    @extend %nj-button;
     @extend .btn-primary;
  }
 
 .nj-button-secondary {
-   @extend .col-12;
-   @extend .col-sm-auto;
-   @extend .btn;
-   @extend .btn-outline-secondary;
+    @extend %nj-button;
+    @extend .btn-outline-secondary;
 }
 
 .nj-ticket-indicator {

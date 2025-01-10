@@ -45,7 +45,8 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{route('customers.show')}}">Customers</a>
-                        </li><li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{route('users.add')}}">Add user</a>
                         </li>
                         @endif
