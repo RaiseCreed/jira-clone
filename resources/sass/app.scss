@@ -86,17 +86,22 @@ main>.nj-container-list {
     flex-wrap: wrap;
     justify-content: space-between;
     @extend.gap-3;
-}
-
-.nj-button-row-table {
-    display: flex;
-    flex-wrap: wrap;
-    @extend .gap-1;
     form {
         @extend .col-sm-auto;
         @extend .col-12;
     }
-    @extend .justify-content-start;
+}
+
+.nj-button-row-table {
+    @extend .nj-button-row;
+    justify-content: end;
+    @extend .gap-1;
+}
+
+.nj-button-row-table-small {
+    [class^='nj-button']{
+        @extend .btn-sm;
+    }
 }
 
 %nj-button {
@@ -105,7 +110,7 @@ main>.nj-container-list {
     @extend .btn;
   }
 
-.nj-button-red {
+.nj-button-danger {
    @extend %nj-button;
    @extend .btn-danger;
 }
@@ -176,3 +181,56 @@ main>.nj-container-list {
     }
 }
 
+select {
+    option:active, option:hover {
+        background-color: $nj-primary-color;
+    }
+    option:checked {
+        background-color: rgba($nj-primary-color, .85);
+        color: white;
+    }
+    
+  }
+  
+label {
+    font-size: 0.8rem;
+    line-height: 1rem;
+    font-weight: 600;
+    color: rgba($body-color, 0.6);
+}
+
+.form-control {
+    font-size: 1rem;
+    line-height: 1.4rem;
+}
+
+.nj-labeled-text-form {
+    .nj-labeled-text-horizontal:not(:last-child) {
+     @extend .table
+    }
+}
+
+.nj-labeled-text {
+    p {
+        margin-bottom: 0px;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.6rem;
+        color: $body-color;
+        word-break: break-word;
+    }
+}
+
+.nj-labeled-text-horizontal {
+    @extend .nj-labeled-text;
+    align-items: center;
+    display: flex;
+    // display: inline-flex;
+    label {
+        
+        @extend .me-1;
+    }
+    label::after { 
+        content: ":";
+    }
+}

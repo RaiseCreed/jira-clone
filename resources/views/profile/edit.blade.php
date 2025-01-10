@@ -10,7 +10,7 @@
             @endif
 
             <!-- Formularz edycji -->
-            <form class="" action="{{ route('profile.update') }}" method="POST">
+            <form class="row" action="{{ route('profile.update') }}" method="POST">
                 @csrf
 
                 {{-- Nazwa usera --}}
@@ -36,7 +36,7 @@
 
                 <div class="nj-button-row">
                     <a type="button" href="{{ route('profile.show') }}" class="nj-button-secondary">
-                        Cancel</a>
+                        Back</a>
                     <button type="submit" class="nj-button-primary">Save Changes</button>
                 </div>
             </form>
