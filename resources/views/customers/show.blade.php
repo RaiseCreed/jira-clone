@@ -17,7 +17,6 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Created at</th>
-                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody class="table-group-divider">
@@ -33,7 +32,7 @@
                                     onsubmit="return confirm('Are you sure you want to delete this user?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="nj-button-red">Delete</button>
+                                    <button type="submit" class="nj-button-danger">Delete</button>
                                 </form>
                             </td>
                         </tr>

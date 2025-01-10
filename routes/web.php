@@ -21,8 +21,8 @@ Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edi
 Route::post('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 
 // Komentarze
-Route::post('/tickets/add-command', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
-Route::delete('/tickets/delete-command/{comment}', [App\Http\Controllers\TicketController::class, 'deleteComment'])->name('tickets.delete-comment');
+Route::post('/tickets/add-comment', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
+Route::delete('/tickets/delete-comment/{comment}', [App\Http\Controllers\TicketController::class, 'deleteComment'])->name('tickets.delete-comment');
 
 // BartekChanges
 // Trasa do usuwania załączników

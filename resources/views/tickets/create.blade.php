@@ -5,7 +5,7 @@
     <div class="card">
         <div class="card-header">Create New Ticket</div>
         <div class="card-body">
-            <form action="{{ route('tickets.store') }}" method="POST">
+            <form class="row" action="{{ route('tickets.store') }}" method="POST">
                 @csrf
 
                 <!-- Tytuł -->
@@ -28,7 +28,7 @@
                 </div>
 
                 <!-- Kategoria -->
-                <div class="mb-3">
+                <div class="mb-3 col-sm-6">
                     <label for="ticket_category_id" class="form-label">Category</label>
                     <select name="ticket_category_id" id="ticket_category_id" class="form-select" required>
                         <option value="">Choose a category</option>
@@ -45,7 +45,7 @@
                 </div>
 
                 <!-- Priorytet -->
-                <div class="mb-3">
+                <div class="mb-3 col-sm-6">
                     <label for="ticket_priority_id" class="form-label">Priority</label>
                     <select name="ticket_priority_id" id="ticket_priority_id" class="form-select" required>
                         <option value="">Choose a priority</option>
@@ -62,7 +62,7 @@
                 </div>
 
                 <!-- Status -->
-                <div class="mb-3">
+                <div class="mb-3 col-sm-6">
                     <label for="ticket_status_id" class="form-label">Status</label>
                     <select name="ticket_status_id" id="ticket_status_id" class="form-select" required>
                         <option value="">Choose a status</option>
@@ -78,7 +78,7 @@
                 </div>
 
                 <!-- Deadline -->
-                <div class="mb-3">
+                <div class="mb-3 col-sm-6">
                     <label for="deadline" class="form-label">Deadline</label>
                     <input type="datetime-local" name="deadline" id="deadline" class="form-control"
                         value="{{ old('deadline') }}" required>

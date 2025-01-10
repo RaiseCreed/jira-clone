@@ -5,7 +5,12 @@
 
 @section('content')
 <div class="container">
-    <div class="row">
+    @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
+    <div class="row gap-md-0 gap-3">
         <div class="col-md-4 order-1 order-md-2">
             <div class="card">
                 <div class="card-header" data-bs-toggle="collapse" href="#statistics" role="button" aria-expanded="true"
@@ -26,14 +31,8 @@
                 </div>
             </div>
         </div>
-        @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-        @endif
         <div class="col-md-8 order-2 order-md-1">
             <div class=" card">
-
                 @if(auth()->user()->isAdmin())
                 <div class="card-header">{{ __('Unassigned tickets') }}</div>
                 @elseif(auth()->user()->isWorker())
@@ -48,7 +47,7 @@
                         {{ session('status') }}
                     </div>
                     @endif
-                    <form method="GET" action="{{ route('home') }}" class="mb-4">
+                    <form method="GET" action="{{ route('home') }}" class="mb-3">
                         <div class="nj-button-row justify-content-start">
                             <div class="col-auto">
                                 <input type="text" name="title" class="form-control" placeholder="Ticket name"
@@ -56,7 +55,7 @@
                             </div>
                             <div class="col-auto">
                                 <select name="category" class="form-control">
-                                    <option value="">Category</option>
+                                    <option value="" disabled selected hidden>Category</option>
                                     @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ request('category')==$category->id ?
                                         'selected' :
@@ -68,7 +67,7 @@
                             </div>
                             <div class="col-auto">
                                 <select name="priority" class="form-control">
-                                    <option value="">Priority</option>
+                                    <option value="" disabled selected hidden>Priority</option>
                                     @foreach($priorities as $priority)
                                     <option value="{{ $priority->id }}" {{ request('priority')==$priority->id ?
                                         'selected' :
@@ -80,7 +79,7 @@
                             </div>
                             <div class="col-auto">
                                 <select name="status" class="form-control">
-                                    <option value="">Status</option>
+                                    <option value="" disabled selected hidden>Status</option>
                                     @foreach($statuses as $status)
                                     <option value="{{ $status->id }}" {{ request('status')==$status->id ? 'selected' :
                                         ''
@@ -97,7 +96,7 @@
                             <div class="col-auto">
                                 {{request('statuses')}}
                                 <select name="worker" class="form-control">
-                                    <option value="">Worker</option>
+                                    <option value="" disabled selected hidden>Worker</option>
                                     <option value="unassigned" {{ request('worker')=='unassigned' ? 'selected' : '' }}>
                                         Not assigned</option>
                                     @foreach($workers as $worker)
@@ -108,9 +107,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-auto">
-                                <button type="submit" class="btn btn-primary">Filter</button>
-                            </div>
+
+                        </div>
+                        <div class="nj-button-row mt-3 justify-content-end">
+                            <button type="reset" class="nj-button-secondary">Clear</button>
+                            <button type="submit" class="nj-button-primary">Filter</button>
                         </div>
                     </form>
                     <div class="table-responsive">
@@ -125,14 +126,13 @@
                                     <th scope="col">Issued by</th>
                                     <th scope="col">Deadline</th>
                                     @if(auth()->user()->isAdmin())
-                                    <th scope="col">Assigned worker</th>
+                                    <th>Assigned worker</th>
                                     @endif
-                                    <th scope="col"></th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="table-group-divider">
                                 @foreach($tickets as $key => $ticket)
-                                <tr>
+                                <tr class="align-middle">
                                     <th scope="row">{{ ($tickets->currentpage()-1) * $tickets->perpage() + $key + 1 }}
                                     </th>
                                     <td>{{$ticket->title}}</td>
@@ -144,8 +144,8 @@
                                     @if(auth()->user()->isAdmin())
                                     <td>{{($ticket->worker) ? $ticket->worker->name : "Not assigned" }}</td>
                                     @endif
-                                    <td>
-                                        <a href="{{route('tickets.show', $ticket->id)}}" class="btn btn-primary">Show
+                                    <td class="nj-button-row-table-small">
+                                        <a href="{{route('tickets.show', $ticket->id)}}" class="nj-button-primary">Show
                                             details</a>
                                     </td>
                                 </tr>
