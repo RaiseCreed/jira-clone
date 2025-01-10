@@ -2,7 +2,7 @@
 
 <div>
     <div class="mb-2">
-        <div class="mb-2 fs-5 text-center">Open tickets</div>
+        <div class="mb-2 fs-5 fw-semibold text-center">Open tickets</div>
         <div class="row justify-content-center">
             <div class="nj-ticket-indicator">
                 <div class="nj-ticket-circle sla-0">4</div>
@@ -24,7 +24,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-12 col-lg-8">
-            <div class="mb-2 fs-5 text-center">Ticket due times</div>
+            <div class="mb-2 fs-5 fw-semibold text-center">Ticket due times</div>
             <div class="mb-2 nj-ticket-due-time-indicator">
                 <div class="">Overdue</div>
                 <div class="nj-ticket-circle overdue">4</div>

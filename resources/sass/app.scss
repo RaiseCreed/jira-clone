@@ -234,3 +234,34 @@ label {
         content: ":";
     }
 }
+
+%nj-progress-bar {
+    @extend .progress-bar;
+}
+
+.nj-progress-bar-green {
+    @extend %nj-progress-bar;
+    background-color: green;
+}
+
+.nj-progress-bar-yellowgreen {
+    @extend %nj-progress-bar;
+    background-color: yellowgreen;
+    color: black;
+}
+
+.nj-progress-bar-yellow {
+    @extend %nj-progress-bar;
+    background-color: yellow;
+    color: black;
+}
+
+.nj-progress-bar-orange {
+    @extend %nj-progress-bar;
+    background-color: orange;
+}
+
+.nj-progress-bar-red {
+    @extend %nj-progress-bar;
+    background-color: red;
+}
