@@ -128,6 +128,7 @@
                     @endif
 
                     {{-- Dodawanie komentarza --}}
+                    {{-- @if(Auth::user()->id == $ticket->owner_id || Auth::user()->id == $ticket->worker_id) --}}
                     <form action="{{ route('tickets.add-comment') }}" method="POST">
                         @csrf
                         <textarea class="col-12 form-control" type="text" name="comment" id="comment" placeholder="Comment"></textarea>
@@ -136,6 +137,7 @@
                             <button type="submit" class="nj-button-primary">Add comment</button>
                         </div>
                     </form>
+                    {{-- @endif --}}
                     <p class="mt-3">Comments:</p>
                     {{-- Listowanie komentarzy --}}
                     @foreach ($comments as $comment)

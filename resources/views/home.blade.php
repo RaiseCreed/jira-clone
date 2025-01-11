@@ -93,10 +93,13 @@
                                 <input type="date" name="deadline" class="form-control"
                                     value="{{ request('deadline') }}">
                             </div>
+
+                            @if(auth()->user()->isAdmin())
                             <div class="col-auto">
                                 {{request('statuses')}}
                                 <select name="worker" class="form-control">
                                     <option value="" disabled selected hidden>Worker</option>
+                                    <option value="">All</option>
                                     <option value="unassigned" {{ request('worker')=='unassigned' ? 'selected' : '' }}>
                                         Not assigned</option>
                                     @foreach($workers as $worker)
@@ -107,6 +110,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endif
 
                         </div>
                         <div class="nj-button-row mt-3 justify-content-end">
@@ -123,7 +127,9 @@
                                     <th scope="col">Category</th>
                                     <th scope="col">Priority</th>
                                     <th scope="col">Status</th>
+                                    @if(auth()->user()->isAdmin() || auth()->user()->isWorker())
                                     <th scope="col">Issued by</th>
+                                    @endif
                                     <th scope="col">Deadline</th>
                                     @if(auth()->user()->isAdmin())
                                     <th>Assigned worker</th>
@@ -139,7 +145,9 @@
                                     <td>{{$ticket->category->name}}</td>
                                     <td>{{$ticket->priority->name}}</td>
                                     <td>{{$ticket->status->name}}</td>
+                                    @if(auth()->user()->isAdmin() || auth()->user()->isWorker())
                                     <td>{{$ticket->owner->name}}</td>
+                                    @endif
                                     <td>{{$ticket->deadline}}</td>
                                     @if(auth()->user()->isAdmin())
                                     <td>{{($ticket->worker) ? $ticket->worker->name : "Not assigned" }}</td>
