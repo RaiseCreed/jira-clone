@@ -34,7 +34,7 @@
                     <span class="invalid-feedback">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="nj-button-row">
+                <div class="nj-button-row justify-content-end">
                     <button type="submit" class="nj-button-primary">
                         Create
                     </button>
