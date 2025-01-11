@@ -110,7 +110,7 @@
 
                         </div>
                         <div class="nj-button-row mt-3 justify-content-end">
-                            <button type="reset" class="nj-button-secondary">Clear</button>
+                            <a href="{{route('home')}}"><span type="reset" class="nj-button-secondary">Clear</span></a>
                             <button type="submit" class="nj-button-primary">Filter</button>
                         </div>
                     </form>
@@ -157,8 +157,8 @@
                 </div>
             </div>
         </div>
-        @isset($qoute)
-        <div class="row">
+        @isset($quote)
+        <div class="row mb-4">
             <div class="col-md-8 mt-4">
                 <div class="card text-center">
                     <div class="card-header">Random Quote</div>

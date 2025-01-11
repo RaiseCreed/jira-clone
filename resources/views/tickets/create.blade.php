@@ -61,22 +61,6 @@
                     @enderror
                 </div>
 
-                <!-- Status -->
-                <div class="mb-3 col-sm-6">
-                    <label for="ticket_status_id" class="form-label">Status</label>
-                    <select name="ticket_status_id" id="ticket_status_id" class="form-select" required>
-                        <option value="">Choose a status</option>
-                        @foreach ($statuses as $status)
-                        <option value="{{ $status->id }}" {{ old('ticket_status_id')==$status->id ? 'selected' : '' }}>
-                            {{ $status->name }}
-                        </option>
-                        @endforeach
-                    </select>
-                    @error('ticket_status_id')
-                    <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-
                 <!-- Deadline -->
                 <div class="mb-3 col-sm-6">
                     <label for="deadline" class="form-label">Deadline</label>

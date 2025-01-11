@@ -62,7 +62,7 @@
                 </div>
 
                 <!-- Status -->
-                <div class="mb-3">
+                {{-- <div class="mb-3">
                     <label for="ticket_status_id" class="form-label">Status</label>
                     <select name="ticket_status_id" id="ticket_status_id" class="form-select" required>
                         @foreach ($statuses as $status)
@@ -76,7 +76,7 @@
                     @error('ticket_status_id')
                     <div class="text-danger">{{ $message }}</div>
                     @enderror
-                </div>
+                </div> --}}
 
                 <!-- Deadline -->
                 <div class="mb-3">

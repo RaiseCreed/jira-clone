@@ -21,6 +21,26 @@ class TicketController extends Controller
         $this->middleware('auth');
     }
     
+    public function changePhase($id, Request $request){
+        $parameterNames = array_keys($request->all());
+        $statusID = $parameterNames[1];
+        $ticket = Ticket::findOrFail($id);
+        $ticket->ticket_status_id = $statusID;
+        $ticket->save();
+
+        $ticket->comments()->create([
+            'comment' => 'Zmiana statusu na: ' . $ticket->status->name,
+            'date' => now(),
+            'author_id' => auth()->id(),
+        ]);
+
+        $user = $ticket->owner;
+        if($user) 
+            Mail::to($user->email)->send(new \App\Mail\NewPhaseTicketMail($ticket));
+
+        return redirect()->route('tickets.show', $id);
+    }
+
     public function assignWorker($id, Request $request){
         $ticket = Ticket::findOrFail($id);
         $ticket->worker_id = $request->selectedWorker;
@@ -81,9 +101,8 @@ class TicketController extends Controller
             'content' => 'required|string',
             'ticket_category_id' => 'required|exists:ticket_categories,id',
             'ticket_priority_id' => 'required|exists:ticket_priorities,id',
-            'ticket_status_id' => 'required|exists:ticket_statuses,id',
             'deadline' => 'required|date|after:now',
-            'attachment' => 'nullable|file|mimes:jpg,png,pdf,docx|max:2048'
+            //'attachment' => 'nullable|file|mimes:jpg,png,pdf,docx|max:2048'
         ]);
 
         $ticket = \App\Models\Ticket::create([
@@ -91,13 +110,25 @@ class TicketController extends Controller
             'content' => $validated['content'],
             'ticket_category_id' => $validated['ticket_category_id'],
             'ticket_priority_id' => $validated['ticket_priority_id'],
-            'ticket_status_id' => $validated['ticket_status_id'],
+            'ticket_status_id' => 1,
             'deadline' => $validated['deadline'],
             'date' => now(),
             'owner_id' => auth()->id(),
             'worker_id' => null,
         ]);
       
+        // if ($request->hasFile('attachment')) {
+        //     $file = $request->file('attachment');
+        //     $filename = time() . '_' . $file->getClientOriginalName();
+        //     $path = $file->storeAs('uploads', $filename, 'public');
+
+        //     $ticket->attachments()->create([
+        //         'file_path' => $path,
+        //         'file_name' => $filename,
+        //         'date'=> now()
+        //     ]);
+        // }
+
         // Wysyłamy maila do admina
         $user = \App\Models\User::where('role', 'admin')->first();
         if($user) 
@@ -110,9 +141,9 @@ class TicketController extends Controller
     {
         $categories = \App\Models\TicketCategory::all();
         $priorities = \App\Models\TicketPriority::all();
-        $statuses = \App\Models\TicketStatus::all();
+        // $statuses = \App\Models\TicketStatus::all();
 
-        return view('tickets.edit', compact('ticket', 'categories', 'priorities', 'statuses'));
+        return view('tickets.edit', compact('ticket', 'categories', 'priorities'));
     }
 
     // Aktualizacja ticketa
@@ -125,8 +156,7 @@ class TicketController extends Controller
             'assigned_to' => 'nullable|exists:users,id',
             'ticket_category_id' => 'required|exists:ticket_categories,id',
             'ticket_priority_id' => 'required|exists:ticket_priorities,id',
-            'ticket_status_id' => 'required|exists:ticket_statuses,id',
-            'deadline' => 'required|date|after:now',
+            'deadline' => 'required|date|',
         ]);
 
 
@@ -170,7 +200,7 @@ class TicketController extends Controller
             $attachment->delete();
         }
         $ticket->delete();
-        return redirect()->route('tickets.show')->with('success', 'Ticket został usunięty.');
+        return redirect()->route('home')->with('success', 'Ticket został usunięty.');
     }
 
     // Dodawanie załącznika do istniejącego ticketa
