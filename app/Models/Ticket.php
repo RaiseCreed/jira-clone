@@ -17,7 +17,6 @@ class Ticket extends Model
     protected $fillable = [
         'ticket_category_id',
         'ticket_priority_id',
-        'ticket_status_id',
         'owner_id',
         'worker_id',
         'title',
@@ -25,8 +24,7 @@ class Ticket extends Model
         'deadline',
         'date_end',
         'content',
-       // 'description',
-        'assigned_to', 
+        'ticket_status_id'
     ];
 
     public function category()

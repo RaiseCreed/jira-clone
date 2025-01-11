@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Ticket;
 use App\Models\User;        
+use Illuminate\Support\Facades\DB;
 use App\Models\TicketCategory;
 use App\Models\TicketPriority;
 use App\Models\TicketStatus;
@@ -33,6 +34,7 @@ class HomeController extends Controller
     {
         $user = Auth::user();
         $query = Ticket::query();
+        $dashboardData = self::dashboardDataArray();
 
         switch ($user->role) {
             case 'customer': 
@@ -96,7 +98,6 @@ class HomeController extends Controller
                 : 0; 
             return $worker;
         });
-
         $quote = self::getQuote();
         return view('home', [
             'tickets' => $tickets,
@@ -105,12 +106,13 @@ class HomeController extends Controller
             'statuses' => $statuses,
             'workers' => $workers,
             'quote' => $quote,
+            'ticketsByPriority' => $dashboardData['tickets_by_priority'],
+            'ticketsByDueTime' => $dashboardData['tickets_by_due_time'],
         ]);
     }
   
     private static function getQuote()
     {
-        $apikey = env('API_KEY');
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => 'https://api.api-ninjas.com/v1/quotes',
@@ -122,13 +124,12 @@ class HomeController extends Controller
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_HTTPHEADER => array(
-                "X-Api-Key: $apikey"
+                "X-Api-Key: iK4R6CNSTPdGgwhlLZ5PT9lzoQbQkzQPC8o1hAwA" // Will be cancelled after presentation
             ),
         ));
 
         $response = json_decode(curl_exec($curl));
         curl_close($curl);
-        //todo sprawdzenie pól?
         if (is_array($response)) { 
             return $response[0];
         }
@@ -136,51 +137,38 @@ class HomeController extends Controller
 
     public function dashboardDataArray()
     {
-        $userId = auth()->id();     
-        $totalTickets = Ticket::where('owner_id', $userId)->count();
+        $userId = auth()->id();
+        
+        $field = (auth()->user()->role === 'customer') ? 'owner_id' : 'worker_id';
     
-        $ticketsByPriority = Ticket::where('owner_id', $userId)
-            ->selectRaw('ticket_priority_id, COUNT(*) as count')
-            ->groupBy('ticket_priority_id')
-            ->get()
-            ->mapWithKeys(function ($item) {
-                return [\App\Models\TicketPriority::find($item->ticket_priority_id)->name => $item->count];
-            })->toArray();
-    
-        $ticketsByStatus = Ticket::where('owner_id', $userId)
-            ->selectRaw('ticket_status_id, COUNT(*) as count')
-            ->groupBy('ticket_status_id')
-            ->get()
-            ->mapWithKeys(function ($item) {
-                return [\App\Models\TicketStatus::find($item->ticket_status_id)->name => $item->count];
-            })->toArray();
+        $ticketsByPriority = \App\Models\TicketPriority::leftJoin('tickets', function ($join) use ($userId,$field) {
+            $join->on('ticket_priorities.id', '=', 'tickets.ticket_priority_id')
+                ->where('tickets.'.$field, '=', $userId);
+        })
+        ->select('ticket_priorities.name', DB::raw('COUNT(tickets.id) as count'))
+        ->groupBy('ticket_priorities.name')
+        ->get()
+        ->pluck('count', 'name')
+        ->toArray();
      
         $ticketsByDueTime = [
-           // '' => Ticket::where('owner_id', $userId)
-             //   ->where('deadline', '<', now())
-             //   ->count(),
-            'today' => Ticket::where('owner_id', $userId)
+            'overdue' => Ticket::where($field, $userId)
+               ->where('deadline', '<', now())
+               ->count(),
+            'today' => Ticket::where($field, $userId)
                 ->whereDate('deadline', now()->toDateString())
                 ->count(),
-            'tomorrow' => Ticket::where('owner_id', $userId)
+            'tomorrow' => Ticket::where($field, $userId)
                 ->whereDate('deadline', now()->addDay()->toDateString())
                 ->count(),
-            'this_week' => Ticket::where('owner_id', $userId)
-                ->whereBetween('deadline', [now()->startOfWeek(), now()->endOfWeek()])
-                ->count(),
-            'next_week' => Ticket::where('owner_id', $userId)
-                ->whereBetween('deadline', [now()->addWeek()->startOfWeek(), now()->addWeek()->endOfWeek()])
-                ->count(),
-            'later' => Ticket::where('owner_id', $userId)
-                ->where('deadline', '>', now()->addWeek()->endOfWeek())
+            'later' => Ticket::where($field, $userId)
+                ->where('deadline', '>', now()->addDay()->endOfDay())
                 ->count(),
         ];
     
         // Zwracane dane jako tablica
         return [
-            'total_tickets' => $totalTickets,
             'tickets_by_priority' => $ticketsByPriority,
-            'tickets_by_status' => $ticketsByStatus,
             'tickets_by_due_time' => $ticketsByDueTime,
         ];
     }

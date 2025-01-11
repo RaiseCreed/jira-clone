@@ -20,9 +20,7 @@ Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])-
 Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 
-// Komentarze
-Route::post('/tickets/add-comment', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
-Route::delete('/tickets/delete-comment/{comment}', [App\Http\Controllers\TicketController::class, 'deleteComment'])->name('tickets.delete-comment');
+
 
 // BartekChanges
 // Trasa do usuwania załączników
@@ -60,6 +58,12 @@ Route::post('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'ass
 Route::get('/tickets/{ticket}/edit', [App\Http\Controllers\TicketController::class, 'edit'])->name('tickets.edit');
 Route::put('/tickets/{ticket}', [App\Http\Controllers\TicketController::class, 'update'])->name('tickets.update');
 Route::delete('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'destroy'])->name('tickets.destroy');
+Route::post('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'changePhase'])->name('tickets.changePhase');
+
+// Komentarze
+Route::delete('/tickets/delete-comment/{comment}', [App\Http\Controllers\TicketController::class, 'deleteComment'])->name('tickets.delete-comment');
+Route::post('/tickets/add-comment', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
+
 
 
 
