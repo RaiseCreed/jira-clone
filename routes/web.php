@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\HomeController;
 
-
 Route::get('/', function () {
     return redirect('home');
 });
@@ -13,23 +12,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-// Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
 // Widoki profilu
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
 Route::get('/profile/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
 Route::post('/profile/update', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
-
-
-
-// BartekChanges
-// Trasa do usuwania załączników
-//Route::delete('tickets/{ticket}/attachment/{attachment}', [TicketController::class, 'destroyAttachment'])->name('tickets.destroyAttachment');
-
-// BartekChanges
-// Trasa do dodawania załączników do ticketu
-//Route::post('/tickets/{ticket}/attachments', [TicketController::class, 'addAttachment'])->name('tickets.addAttachment');
-
 
 //Zarządzanie pracownikami i klientami
 Route::get('/workers', [App\Http\Controllers\WorkersController::class, 'show'])->name('workers.show');
@@ -54,7 +41,7 @@ Route::delete('/users/{email}', [App\Http\Controllers\UserController::class, 'de
 Route::get('/tickets/create', [App\Http\Controllers\TicketController::class, 'create'])->name('tickets.create');
 Route::get('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'show'])->name('tickets.show');
 Route::post('/tickets', [App\Http\Controllers\TicketController::class, 'store'])->name('tickets.store');
-Route::post('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'assignWorker'])->name('tickets.assignWorker');
+Route::post('/tickets/{id}/assign', [App\Http\Controllers\TicketController::class, 'assignWorker'])->name('tickets.assignWorker');
 Route::get('/tickets/{ticket}/edit', [App\Http\Controllers\TicketController::class, 'edit'])->name('tickets.edit');
 Route::put('/tickets/{ticket}', [App\Http\Controllers\TicketController::class, 'update'])->name('tickets.update');
 Route::delete('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'destroy'])->name('tickets.destroy');
@@ -63,10 +50,3 @@ Route::post('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'cha
 // Komentarze
 Route::delete('/tickets/delete-comment/{comment}', [App\Http\Controllers\TicketController::class, 'deleteComment'])->name('tickets.delete-comment');
 Route::post('/tickets/add-comment', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
-
-
-
-
-
-//pobieranie danych do dashboardu
-// Route::get('', [HomeController::class, 'dashboardDataArray'])->name('');
