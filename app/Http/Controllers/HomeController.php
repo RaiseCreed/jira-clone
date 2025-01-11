@@ -79,7 +79,7 @@ class HomeController extends Controller
         }
         
 
-        $tickets = $query->paginate(3);
+        $tickets = $query->paginate(10);
         $categories = TicketCategory::all();
         $priorities = TicketPriority::all();
         $statuses = TicketStatus::all();

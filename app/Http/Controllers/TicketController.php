@@ -60,22 +60,22 @@ class TicketController extends Controller
         return redirect()->route('tickets.show', $comment->ticket_id);
     }
 
-    public function addComment(Request $request)
+    public function addComment($id, Request $request)
     {
+        $ticket = Ticket::findOrFail($id);
+
         $validated = $request->validate([
             'comment' => 'required|string',
-            'ticket_id' => 'required|exists:tickets,id',
         ]);
 
-        $ticket = Ticket::findOrFail($validated['ticket_id']);
         $ticket->comments()->create([
             'comment' => $validated['comment'],
             'date' => now(),
             'author_id' => auth()->id(),
-            'ticket_id' => $validated['ticket_id']
+            'ticket_id' => $ticket->id
         ]);
 
-        return redirect()->route('tickets.show', $validated['ticket_id']);
+        return redirect()->route('tickets.show', $ticket->id);
     }
     
     public function show($id)

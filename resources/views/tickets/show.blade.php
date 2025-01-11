@@ -23,53 +23,53 @@
                         </form>
                     </div>
                 @endif
-                <div class="col-12 col-sm-8 nj-labeled-text-form order-2 order-sm-1">
-                    <div class="nj-labeled-text-horizontal">
+                <div class="col-12 col-auto nj-labeled-text-form order-2 order-sm-1">
+                    <div class="nj-labeled-text">
                         <label for="id">Id</label>
                         <p id="id">{{ $ticket->id }}</p>
                     </div>
-                    <div class="nj-labeled-text-horizontal">
+                    <div class="nj-labeled-text">
                         <label for="name">Name</label>
                         <p id="name">{{ $ticket->title }}</p>
                     </div>
-                    <div class="nj-labeled-text-horizontal">
+                    <div class="nj-labeled-text">
                         <label for="category">Category</label>
                         <p id="category">{{ $ticket->category->name }}</p>
                     </div>
-                    <div class="nj-labeled-text-horizontal">
+                    <div class="nj-labeled-text">
                         <label for="priority">Priority</label>
                         <p id="priority">{{ $ticket->priority->name }}</p>
                     </div>
-                    <div class="nj-labeled-text-horizontal">
+                    <div class="nj-labeled-text">
                         <label for="category">Category</label>
                         <p id="category">{{ $ticket->category->name }}</p>
                     </div>
-                    <div class="nj-labeled-text-horizontal">
+                    <div class="nj-labeled-text">
                         <label for="status">Status</label>
                         <p id="status">{{ $ticket->status->name }}</p>
                     </div>
-                    <div class="nj-labeled-text-horizontal">
+                    <div class="nj-labeled-text">
                         <label for="created">Created</label>
                         <p id="created">{{ $ticket->created_at }}</p>
                     </div>
-                    <div class="nj-labeled-text-horizontal">
+                    <div class="nj-labeled-text">
                         <label for="deadline">Deadline</label>
                         <p id="deadline">{{ $ticket->deadline }}</p>
                     </div>
-                    <div class="nj-labeled-text-horizontal">
+                    <div class="nj-labeled-text">
                         <label for="description">Description</label>
                         <p id="description">{{ $ticket->content }}</p>
                     </div>
 
                     @if (Auth::user()->isAdmin() && $ticket->worker)
-                        <div class="nj-labeled-text-horizontal">
+                        <div class="nj-labeled-text">
                             <label for="assigned">Assigned</label>
                             <p id="assigned">{{ $ticket->worker->name }}</p>
                         </div>
                     @endif
 
                     @if ((Auth::user()->isAdmin() || Auth::user()->isWorker()) && $ticket->notes)
-                        <div class="nj-labeled-text-horizontal">
+                        <div class="nj-labeled-text">
                             <label for="notes">Work notes</label>
                         </div>
                         <textarea class="form-control" id="" cols="60" rows="10" disabled>{{ $ticket->notes }}</textarea>
@@ -129,10 +129,9 @@
 
                     {{-- Dodawanie komentarza --}}
                     {{-- @if(Auth::user()->id == $ticket->owner_id || Auth::user()->id == $ticket->worker_id) --}}
-                    <form action="{{ route('tickets.add-comment') }}" method="POST">
+                    <form action="{{ route('tickets.add-comment', $ticket->id) }}" method="POST">
                         @csrf
                         <textarea class="col-12 form-control" type="text" name="comment" id="comment" placeholder="Comment"></textarea>
-                        <input type="hidden" name="ticket_id" value="{{ $ticket->id }}">
                         <div class="mt-3 nj-button-row justify-content-end">
                             <button type="submit" class="nj-button-primary">Add comment</button>
                         </div>

@@ -166,8 +166,7 @@
             </div>
         </div>
         @isset($quote)
-        <div class="row mb-4">
-            <div class="col-md-8 mt-4">
+            <div class="col-md-8 mt-4 mb-3">
                 <div class="card text-center">
                     <div class="card-header">Random Quote</div>
                     <div class="card-body">
@@ -175,7 +174,6 @@
                     </div>
                 </div>
             </div>
-        </div>
         @endisset
     </div>
 </div>

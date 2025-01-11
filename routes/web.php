@@ -49,4 +49,4 @@ Route::post('/tickets/{id}', [App\Http\Controllers\TicketController::class, 'cha
 
 // Komentarze
 Route::delete('/tickets/delete-comment/{comment}', [App\Http\Controllers\TicketController::class, 'deleteComment'])->name('tickets.delete-comment');
-Route::post('/tickets/add-comment', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
+Route::post('/tickets/{id}/add-comment', [App\Http\Controllers\TicketController::class, 'addComment'])->name('tickets.add-comment');
