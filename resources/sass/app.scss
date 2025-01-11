@@ -4,5 +4,264 @@
 // Variables
 @import 'variables';
 
+// Bootstrap overrides
+$primary: $nj-primary-color;
+$navbar-light-brand-color: rgba(white, .85);
+$navbar-light-brand-hover-color: white;
+$navbar-light-icon-color: white;
+$navbar-light-color: rgba(white, .70);
+$navbar-light-hover-color: rgba(white, .95);
+$navbar-light-active-color:white;
+$navbar-light-toggler-border-color: rgba(white, .15);
+$card-cap-bg: $nj-primary-color;
+$card-cap-color: white;
+$focus-ring-width: .1rem;
+
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+
+main>.nj-container {
+    @extend .container;
+    @extend .d-flex; 
+    @extend .justify-content-center;
+    >.card {
+        @extend .col-12; 
+        @extend .col-md-8;
+        @extend .col-lg-6;
+    }
+}
+
+main>.nj-container-list {
+    @extend .container;
+    @extend .d-flex; 
+    @extend .justify-content-center;
+    >.card {
+        @extend .col-12;
+    }
+}
+
+.nj-home-background {
+    // width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='2556' height='1440' preserveAspectRatio='none' viewBox='0 0 2556 1440'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1015%26quot%3b)' fill='none'%3e%3crect width='2556' height='1440' x='0' y='0' fill='%230e2a47'%3e%3c/rect%3e%3cpath d='M1278 1454.47C1477.1 1469.52 1680.25 1404.62 1821.77 1263.77 1963.61 1122.64 2031.57 919.5 2016.06 720 2001.56 533.68 1875.94 386.37 1743.3 254.7 1611.32 123.69 1463.92-8.93 1278-12.71 1089.39-16.54 922.77 98.1 793.43 235.43 668.38 368.2 584.65 537.64 587.95 720 591.18 899.39 687.76 1056.64 810.61 1187.39 938.34 1323.33 1091.99 1440.41 1278 1454.47' fill='rgba(28%2c 83%2c 142%2c 1)'%3e%3c/path%3e%3cpath d='M1278 1053.85C1368.5 1060.69 1460.84 1031.19 1525.17 967.17 1589.64 903.02 1620.53 810.68 1613.48 720 1606.89 635.31 1549.79 568.35 1489.5 508.5 1429.51 448.95 1362.51 388.67 1278 386.95 1192.27 385.21 1116.53 437.32 1057.74 499.74 1000.9 560.09 962.84 637.11 964.34 720 965.81 801.54 1009.71 873.02 1065.55 932.45 1123.61 994.24 1193.45 1047.46 1278 1053.85' fill='rgba(39%2c 116%2c 198%2c 1)'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1015'%3e%3crect width='2556' height='1440' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+}
+
+.nj-home-logo {
+    font-size: min(20vw, 150px);
+    color: white;
+    position: absolute;
+    position-area: center;
+    display: flex;
+    align-items: center;
+}
+
+.nj-home-logo img {
+    height: 1em;
+}
+
+.nj-nav-bar {
+    background-color: $nj-primary-color;
+    .bi-person-fill-gear {
+        color: rgba($color: white, $alpha: 0.75);
+    }
+    .bi-person-fill-gear:hover {
+        color: rgba($color: white, $alpha: .95);   
+    }
+    .bi-person-fill-gear.show {
+            color: white;
+    }
+}
+
+.nj-bg-primary {
+    background-color: $nj-primary-color;
+}
+
+.nj-button-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    @extend.gap-3;
+    form {
+        @extend .col-sm-auto;
+        @extend .col-12;
+    }
+}
+
+.nj-button-row-table {
+    @extend .nj-button-row;
+    justify-content: end;
+    @extend .gap-1;
+}
+
+.nj-button-row-table-small {
+    [class^='nj-button']{
+        @extend .btn-sm;
+    }
+}
+
+%nj-button {
+    @extend .col-12;
+    @extend .col-sm-auto;
+    @extend .btn;
+  }
+
+.nj-button-danger {
+   @extend %nj-button;
+   @extend .btn-danger;
+}
+
+.nj-button-primary {
+    @extend %nj-button;
+    @extend .btn-primary;
+ }
+
+.nj-button-secondary {
+    @extend %nj-button;
+    @extend .btn-outline-secondary;
+}
+
+.nj-ticket-indicator {
+    width: min-content;
+    font-size: .8rem;
+    font-weight: 700;
+    text-align: center;
+    .nj-ticket-circle {
+        @extend .rounded-circle;
+        align-content: center;
+        color: white;
+        height: 3rem;
+        width: 3rem;
+    }
+    .nj-ticket-circle.sla-0 {
+        background-color: red;
+    }
+    .nj-ticket-circle.sla-1 {
+        background-color: darkorange;
+    }
+    .nj-ticket-circle.sla-2 {
+        background-color: green;
+    }
+    .nj-ticket-circle.sla-3 {
+        background-color: gray;
+    }
+}
+
+.nj-ticket-due-time-indicator {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 700;
+    text-align: center;
+    .nj-ticket-circle {
+        @extend .rounded-circle;
+        font-size: .8rem;
+        align-content: center;
+        color: white;
+        height: 3rem;
+        width: 3rem;
+    }
+    .nj-ticket-circle.overdue {
+        background-color: red;
+    }
+    .nj-ticket-circle.today {
+        background-color: darkorange;
+    }
+    .nj-ticket-circle.tomorrow {
+        background-color: green;
+    }
+    .nj-ticket-circle.rest {
+        background-color: gray;
+    }
+}
+
+select {
+    option:active, option:hover {
+        background-color: $nj-primary-color;
+    }
+    option:checked {
+        background-color: rgba($nj-primary-color, .85);
+        color: white;
+    }
+    
+  }
+  
+label {
+    font-size: 0.8rem;
+    line-height: 1rem;
+    font-weight: 600;
+    color: rgba($body-color, 0.6);
+}
+
+.form-control {
+    font-size: 1rem;
+    line-height: 1.4rem;
+}
+
+.nj-labeled-text-form {
+    .nj-labeled-text-horizontal:not(:last-child) {
+     @extend .table
+    }
+}
+
+.nj-labeled-text {
+    p {
+        margin-bottom: 0px;
+        font-size: 1rem;
+        font-weight: 600;
+        line-height: 1.6rem;
+        color: $body-color;
+        word-break: break-word;
+    }
+}
+
+.nj-labeled-text-horizontal {
+    @extend .nj-labeled-text;
+    align-items: center;
+    display: flex;
+    // display: inline-flex;
+    label {
+        
+        @extend .me-1;
+    }
+    label::after { 
+        content: ":";
+    }
+}
+
+%nj-progress-bar {
+    @extend .progress-bar;
+}
+
+.nj-progress-bar-green {
+    @extend %nj-progress-bar;
+    background-color: green;
+}
+
+.nj-progress-bar-yellowgreen {
+    @extend %nj-progress-bar;
+    background-color: yellowgreen;
+    color: black;
+}
+
+.nj-progress-bar-yellow {
+    @extend %nj-progress-bar;
+    background-color: yellow;
+    color: black;
+}
+
+.nj-progress-bar-orange {
+    @extend %nj-progress-bar;
+    background-color: orange;
+}
+
+.nj-progress-bar-red {
+    @extend %nj-progress-bar;
+    background-color: red;
+}
